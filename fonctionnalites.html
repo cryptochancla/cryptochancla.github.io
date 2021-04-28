@@ -46,20 +46,21 @@
 
   <main class="px-3">
 
-    <p>Application & code source hebergés sur github.</p>
-    <p>C'est du front-end, laissez tourner sur votre machine.</p>
-    <p>L'avantage c'est que vous avez le contrôle. Votre clé API n'est pas stockée.</p>
-
-    <h1>Fonctionnalités</h1> 
-
+    <p>Application et code source hebergés sur github.<br>
+    C'est du front-end, laissez tourner sur votre machine.<br>
+    L'avantage c'est que vous avez le contrôle. Votre clé API n'est pas stockée.</p>
+    <br>
+    <h1>Smart sell</h1> 
     <ul>
-
-      <li>Fixe un prix d'entrée et le suit vers le bas avant d'acheter</li>
-      <li>Fixe un prix de sortie et le suit vers le haut avant de vendre</li>
-      <li>Achète dès la fin d'un dump</li>
-      <li>Vend dès la fin d'un pump</li>
-    
+    <li>Fixe un prix CIBLE, le suit vers le haut et attend une baisse de X % pour vendre.</li>
+    <br><li>Comment ça marche ?<br>Grâce à l'API Binance, l'application reçoit constamment le prix ACTUEL de votre coin. Quand celui-ci atteint votre CIBLE, le smart sell se met en route :
+    <br>- Il enregistre et actualise en permanence le dernier PLUS_HAUT depuis que CIBLE touchée.<br>- Si prix ACTUEL subit une baisse de X % par rapport à PLUS_HAUT, il vend.</li>   
+    <br><li>Pourquoi faire ?<br>Le marché monte, vous êtes en positif, mais vous ne savez pas quand TP, vous savez pas si le pump va continuer, vous hésitez et surtout il est 4H du mat, vous devez aller vous coucher, ça se trouve le retournement se fera a 8H.</li>
+    <br><li>Si vous voulez juste profiter d'un pump, mettez un prix proche du prix ACTUEL en prix CIBLE.
     </ul>
+    <br>
+    <h1>Smart buy</h1> 
+    <p>Exactement la même chose mais dans l'autre sens.</p>
 
   </main>
 
