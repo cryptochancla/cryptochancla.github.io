@@ -22,7 +22,7 @@
   </head>
   <body class="text-white bg-dark">
 
-    <h3><i class="bi bi-calculator-fill"></i>CryptoChancla</h3>
+    <h3><i class="bi bi-calculator-fill"></i>CryptoChancla</h3><p>Pour fonctionner, l'onglet ne doit être ni fermé ni rafraîchi.</p>
 
 
 
@@ -31,7 +31,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-dark">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalCleAPILabel">Liaison vers Binance</h5>
+          <h5 class="modal-title" id="modalCleAPILabel">Liaison vers votre compte Binance</h5>
         </div>
         <div class="modal-body">
           <form>
@@ -44,6 +44,7 @@
               <input type="text" class="form-control" id="secret_api">
             </div>
           </form>
+          <p>Laissez vide si vous voulez juste tester.</p>
         </div>
         <div class="modal-footer">
           <button type="button" onclick="saisie_cle_api()" class="btn btn-secondary">Commencer</button>
@@ -192,6 +193,10 @@
     </tbody>
   </table>
 
+
+
+  <div id="json_div"></div>
+
   </body>
 
 
@@ -212,12 +217,41 @@ function saisie_cle_api() {
 
 window.addEventListener('load', function () {
   myModal.show();
-
-
-
-
-
 });
+
+
+
+
+
+
+
+
+var rep_recu=1;
+
+setInterval(function(){ 
+
+  if(rep_recu==1){
+
+    var xmlhttp = new XMLHttpRequest();
+    var url = "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT";
+
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var myArr = JSON.parse(this.responseText);
+            console.log(myArr.price);
+            rep_recu=1;
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    rep_recu=0;
+
+  }
+
+}, 1000);
+
 
 
 
