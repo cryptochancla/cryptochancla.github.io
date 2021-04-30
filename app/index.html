@@ -92,10 +92,11 @@
       </select>
     </td>
     <td><input id="smart_buy_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234"></td>
-    <td><input id="smart_buy_input_ecart" type="text" class="form-control col-2" placeholder="Ecart X en %, ex 15"></td>
+    <td><input id="smart_buy_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur en %, ex 15"></td>
     <td><input id="smart_buy_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555"></td>
     <td> <button type="button" onclick="smart_buy(false)" id="smart_buy_button_test" class="btn btn-secondary">Test</button></td>
     <td><button type="button" onclick="smart_buy(true)" id="smart_buy_button" class="btn btn-success">Acheter pour de vrai</button></td>
+    <td>Solde dispo : 43.23</td>
   </tr></table>
   
   <table class="table table-dark table-striped">
@@ -104,13 +105,13 @@
       <tr>
         <th>Paire</th>
         <th>Prix CIBLE</th>
-        <th>Ecart X</th>
+        <th>Ecart déclencheur</th>
         <th>Quantité</th>
         <th>Etat</th>
         <th></th>
         <th>Prix ACTUEL</th>
         <th>PLUS_BAS</th>
-        <th>Diff ACTUEL/PLUS_HAUT</th>
+        <th>Diff prix ACTUEL/PLUS_BAS</th>
         <th>Date début</th>
         <th>Date CIBLE touchée</th>
         <th>Date vente</th>
@@ -150,10 +151,11 @@
       </select>
     </td>
     <td><input id="smart_sell_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234"></td>
-    <td><input id="smart_sell_input_ecart" type="text" class="form-control col-2" placeholder="Ecart X en %, ex 15"></td>
+    <td><input id="smart_sell_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur en %, ex 1.5"></td>
     <td><input id="smart_sell_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555"></td>
     <td> <button type="button" onclick="smart_sell(false)" id="smart_sell_button_test" class="btn btn-secondary">Test</button></td>
     <td><button type="button" onclick="smart_sell(true)" id="smart_sell_button" class="btn btn-danger">Vendre pour de vrai</button></td>
+    <td>Solde dispo : 43.23</td>
   </tr></table>
 
   <table class="table table-dark table-striped">
@@ -161,13 +163,13 @@
       <tr>
         <th>Paire</th>
         <th>Prix CIBLE</th>
-        <th>Ecart X</th>
+        <th>Ecart déclencheur</th>
         <th>Quantité</th>
         <th>Etat</th>
         <th></th>
         <th>Prix ACTUEL</th>
         <th>PLUS_HAUT</th>
-        <th>Diff ACTUEL/PLUS_HAUT</th>
+        <th>Diff prix ACTUEL/PLUS_HAUT</th>
         <th>Date début</th>
         <th>Date CIBLE touchée</th>
         <th>Date vente</th>
@@ -182,7 +184,7 @@
         <th id="smart_sell_prix_cible"></th>
         <td id="smart_sell_ecart"></td>
         <th id="smart_sell_quantite"></th>
-        <td  id="smart_buy_etat"></td>
+        <td  id="smart_sell_etat"></td>
         <td  id="smart_sell_annuler_button"><button type="button" onclick="cancel_smart_sell()" class="btn btn-warning">Annuler</button></td>
         <td id="smart_sell_prix_actuel"></td>
         <td  id="smart_sell_plus_haut"></td>
@@ -283,7 +285,7 @@ function smart_buy(real_buy_local){
   //insert premieres infos dans tab
   document.getElementById("smart_buy_paire").innerHTML = smart_buy_paire;
   document.getElementById("smart_buy_prix_cible").innerHTML = smart_buy_prix_cible;
-  document.getElementById("smart_buy_ecart").innerHTML = smart_buy_ecart+" %";
+  document.getElementById("smart_buy_ecart").innerHTML = "+ "+smart_buy_ecart+" %";
   document.getElementById("smart_buy_quantite").innerHTML = smart_buy_quantite;
 
   document.getElementById("smart_buy_etat").innerHTML = "En attente";
@@ -431,7 +433,7 @@ function smart_sell(real_sell_local){
   //insert premieres infos dans tab
   document.getElementById("smart_sell_paire").innerHTML = smart_sell_paire;
   document.getElementById("smart_sell_prix_cible").innerHTML = smart_sell_prix_cible;
-  document.getElementById("smart_sell_ecart").innerHTML = smart_sell_ecart+" %";
+  document.getElementById("smart_sell_ecart").innerHTML = "- "+smart_sell_ecart+" %";
   document.getElementById("smart_sell_quantite").innerHTML = smart_sell_quantite;
 
   document.getElementById("smart_sell_etat").innerHTML = "En attente";
@@ -515,7 +517,7 @@ setInterval(function(){
     document.getElementById("smart_sell_quantite").innerHTML = "";
     document.getElementById("smart_sell_etat").innerHTML = "";
     document.getElementById("smart_sell_prix_actuel").innerHTML = "";
-    document.getElementById("smart_sell_plus_bas").innerHTML = "";
+    document.getElementById("smart_sell_plus_haut").innerHTML = "";
     document.getElementById("smart_sell_diff").innerHTML = "";
     document.getElementById("smart_sell_date_debut").innerHTML = "";
     document.getElementById("smart_sell_date_cible").innerHTML = "";
@@ -551,12 +553,11 @@ function cancel_smart_sell(){
 
 
 //TO DO
-
-//xmlhttp market buy/sell if real_buy / real_sell
-
 //add quantite dispo sur wallet spot binance de la paire select
+//xmlhttp market buy/sell if real_buy / real_sell
 //creer array pour plusieurs smart sell/buy
-
+//ameliorer interface
+//mettre code smart sell/buy dans js ext
 
 
 </script>
