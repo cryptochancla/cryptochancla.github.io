@@ -586,7 +586,8 @@ xhr.send("symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price
 
 
 var xmlhttp_test = new XMLHttpRequest();
-    var url = "https://cors-escape.herokuapp.com/https://api.binance.com/api/v3/order";
+    //var url = "https://cors-escape.herokuapp.com/https://api.binance.com/api/v3/order";
+    var url = "https://cors-anywhere.herokuapp.com/https://api.binance.com/api/v3/order";
 
 
     xmlhttp_test.onreadystatechange = function() {
@@ -596,9 +597,9 @@ var xmlhttp_test = new XMLHttpRequest();
         }
     };
     xmlhttp_test.open("POST", url, true);
-    xmlhttp_test.withCredentials = false; 
+    //xmlhttp_test.withCredentials = false; 
     //xmlhttp_test.setRequestHeader("Access-Control-Allow-Credentials", "true");
-    xmlhttp_test.setRequestHeader("Access-Control-Allow-Origin", "https://cryptochancla.github.io");
+    //xmlhttp_test.setRequestHeader("Access-Control-Allow-Origin", "https://cryptochancla.github.io");
     xmlhttp_test.send(null);
 
  
