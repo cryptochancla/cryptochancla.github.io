@@ -566,15 +566,15 @@ function cancel_smart_sell(){
 
 
 
-
+/*
 
 var xhr = new XMLHttpRequest();
 xhr.open("POST", 'https://api.binance.com/api/v3/order', true);
 
 //Envoie les informations du header adaptées avec la requête
 //xhr.setRequestHeader("User-Agent", "Mozilla/4.0 (compatible; PHP Binance API)");//X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A
-xhr.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3");
-xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//xhr.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3");
+//xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
 xhr.onreadystatechange = function() { //Appelle une fonction au changement d'état.
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
@@ -583,6 +583,27 @@ xhr.onreadystatechange = function() { //Appelle une fonction au changement d'ét
     }
 }
 xhr.send("symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365&signature=c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a");
+*/
+
+
+
+var xmlhttp_test = new XMLHttpRequest();
+    var url = "https://api.binance.com/api/v3/order";
+
+
+    xmlhttp_test.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var myArr = JSON.parse(this.responseText);
+            console.log(myArr);
+        }
+    };
+    xmlhttp_test.open("POST", url, true);
+    xmlhttp_test.withCredentials = true; 
+    xmlhttp_test.setRequestHeader("Access-Control-Allow-Origin", "cryptochancla.github.io");
+    xmlhttp_test.send();
+
+ 
+
 
 
 
