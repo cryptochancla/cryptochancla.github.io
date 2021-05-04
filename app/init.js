@@ -67,7 +67,7 @@ setInterval(function(){
             
               var xmlhttp_test = new XMLHttpRequest();
                   //var url = "https://cors-escape.herokuapp.com/https://api.binance.com/api/v3/order";
-                  var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order/test";
+                  var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";
             
             
                   xmlhttp_test.onreadystatechange = function() {
