@@ -62,7 +62,7 @@ setInterval(function(){
 
 
             if(tmp==1){
-            var query = "symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp="+serverTime;
+            var query = "symbol=BNBUSDT&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=600.5&recvWindow=5000&timestamp="+serverTime;
             var query_signed = CryptoJS.HmacSHA256(query, "0MkzEozy64jF0y9Zf4dnBsUbTIlgPjSwGMSNWOmQ78l9fbxzje6d7ivMYCUFkUML"); //crypt query avec secret de la cle api 
             
               var xmlhttp_test = new XMLHttpRequest();
