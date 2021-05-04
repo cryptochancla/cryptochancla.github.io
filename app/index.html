@@ -9,642 +9,280 @@
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
-    <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 
     <link href="style.css" rel="stylesheet">
 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha256.js"></script>
-
-
   </head>
   <body class="text-white bg-dark">
 
-    <h3><i class="bi bi-calculator-fill"></i>CryptoChancla</h3><p>Pour fonctionner, l'onglet ne doit être ni fermé ni rafraîchi.</p>
+    <h3><i class="bi bi-calculator-fill"></i>CryptoChancla</h3><p>Pour fonctionner, l'onglet ne doit être ni fermé ni rafraîchi. <span id="heure_binance"></span> (Binance Server Time)</p>
 
 
 
-  <!-- Modal -->
-  <div class="modal fade" id="modalCleAPI" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalCleAPILabel">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-dark">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalCleAPILabel">Liaison vers votre compte Binance</h5>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="cle" class="col-form-label">Clé API :</label>
-              <input type="text" class="form-control" id="cle">
-            </div>
-            <div class="mb-3">
-              <label for="secret" class="col-form-label">Secret :</label>
-              <input type="text" class="form-control" id="secret">
-            </div>
-          </form>
-          <p>Laissez vide si vous voulez juste tester.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" onclick="saisie_cle_api()" class="btn btn-secondary">Commencer</button>
+    <!-- Modal -->
+    <div class="modal fade" id="modalCleAPI" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalCleAPILabel">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCleAPILabel">Liaison vers votre compte Binance</h5>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="cle" class="col-form-label">Clé API :</label>
+                <input type="text" class="form-control" id="cle">
+              </div>
+              <div class="mb-3">
+                <label for="secret" class="col-form-label">Secret :</label>
+                <input type="text" class="form-control" id="secret">
+              </div>
+            </form>
+            <p>Laissez vide si vous voulez juste tester.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" onclick="saisie_cle_api()" class="btn btn-secondary">Commencer</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
 
 
 
-<!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container"> 
-  <div id="tradingview_b0bb0"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-  new TradingView.widget(
-  {
-  "autosize": true,
-  "symbol": "BINANCE:BTCUSDT",
-  "interval": "D",
-  "timezone": "Etc/UTC",
-  "theme": "dark",
-  "style": "1",
-  "locale": "fr",
-  "toolbar_bg": "#f1f3f6",
-  "enable_publishing": false,
-  "withdateranges": true,
-  "hide_side_toolbar": false,
-  "allow_symbol_change": true,
-  "save_image": false,
-  "container_id": "tradingview_b0bb0"
-}
-  );
-  </script>
-</div>
-<!-- TradingView Widget END -->
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container"> 
+      <div id="tradingview_b0bb0"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+      <script type="text/javascript">
+      new TradingView.widget(
+      {
+      "autosize": true,
+      "symbol": "BINANCE:BTCUSDT",
+      "interval": "D",
+      "timezone": "Etc/UTC",
+      "theme": "dark",
+      "style": "1",
+      "locale": "fr",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "withdateranges": true,
+      "hide_side_toolbar": false,
+      "allow_symbol_change": true,
+      "save_image": false,
+      "container_id": "tradingview_b0bb0"
+    }
+      );
+      </script>
+    </div>
+    <!-- TradingView Widget END -->
 
   
-  <h2>Smart buy</h2>
+    <h2>Smart buy</h2>
 
-  <table><tr>
-    <td>
-      <select class="form-select" id="smart_buy_select_paire">
-      </select>
-    </td>
-    <td><input id="smart_buy_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234"></td>
-    <td><input id="smart_buy_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur en %, ex 15"></td>
-    <td><input id="smart_buy_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555"></td>
-    <td> <button type="button" onclick="smart_buy(false)" id="smart_buy_button_test" class="btn btn-secondary">Test</button></td>
-    <td><button type="button" onclick="smart_buy(true)" id="smart_buy_button" class="btn btn-success">Acheter pour de vrai</button></td>
-    <td>Solde dispo : </td>
-  </tr></table>
+    <table><tr>
+      <td>
+        <select class="form-select" id="smart_buy_select_paire">
+        </select>
+      </td>
+      <td><input id="smart_buy_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234"></td>
+      <td><input id="smart_buy_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur en %, ex 15"></td>
+      <td><input id="smart_buy_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555"></td>
+      <td> <button type="button" onclick="smart_buy(false)" id="smart_buy_button_test" class="btn btn-secondary">Test</button></td>
+      <td><button type="button" onclick="smart_buy(true)" id="smart_buy_button" class="btn btn-success">Acheter pour de vrai</button></td>
+      <td>Solde dispo : </td>
+    </tr></table>
   
-  <table class="table table-dark table-striped">
+    <table class="table table-dark table-striped">
 
-    <thead>
-      <tr>
-        <th>Paire</th>
-        <th>Prix CIBLE</th>
-        <th>Ecart déclencheur</th>
-        <th>Quantité</th>
-        <th>Etat</th>
-        <th></th>
-        <th>Prix ACTUEL</th>
-        <th>PLUS_BAS</th>
-        <th>Diff prix ACTUEL/PLUS_BAS</th>
-        <th>Date début</th>
-        <th>Date CIBLE touchée</th>
-        <th>Date vente</th>
-      </tr>
-    </thead>
-    <tbody>
-  
-  
-  
-      <tr>
-        <th id="smart_buy_paire"></th>
-        <th id="smart_buy_prix_cible"></th>
-        <td id="smart_buy_ecart"></td>
-        <th id="smart_buy_quantite"></th>
-        <td  id="smart_buy_etat"></td>
-        <td  id="smart_buy_annuler_button"><button type="button" onclick="cancel_smart_buy()" class="btn btn-warning">Annuler</button></td>
-        <td id="smart_buy_prix_actuel"></td>
-        <td  id="smart_buy_plus_bas"></td>
-        <td id="smart_buy_diff"></td>
-        <td id="smart_buy_date_debut"></td>
-        <td id="smart_buy_date_cible"></td>
-        <td id="smart_buy_date_vente"></td>
-      </tr>
-  
-  
+      <thead>
+        <tr>
+          <th>Paire</th>
+          <th>Prix CIBLE</th>
+          <th>Ecart déclencheur</th>
+          <th>Quantité</th>
+          <th>Etat</th>
+          <th></th>
+          <th>Prix ACTUEL</th>
+          <th>PLUS_BAS</th>
+          <th>Diff prix ACTUEL/PLUS_BAS</th>
+          <th>Date début</th>
+          <th>Date CIBLE touchée</th>
+          <th>Date vente</th>
+        </tr>
+      </thead>
+      <tbody>
+    
+    
+    
+        <tr>
+          <th id="smart_buy_paire"></th>
+          <th id="smart_buy_prix_cible"></th>
+          <td id="smart_buy_ecart"></td>
+          <th id="smart_buy_quantite"></th>
+          <td  id="smart_buy_etat"></td>
+          <td  id="smart_buy_annuler_button"><button type="button" onclick="cancel_smart_buy()" class="btn btn-warning">Annuler</button></td>
+          <td id="smart_buy_prix_actuel"></td>
+          <td  id="smart_buy_plus_bas"></td>
+          <td id="smart_buy_diff"></td>
+          <td id="smart_buy_date_debut"></td>
+          <td id="smart_buy_date_cible"></td>
+          <td id="smart_buy_date_vente"></td>
+        </tr>
+    
+    
 
-  
-  
-    </tbody>
-  </table>
+    
+    
+      </tbody>
+    </table>
 
-  <h2>Smart sell</h2>
+    <h2>Smart sell</h2>
 
-  <table><tr>
-    <td>
-      <select class="form-select" id="smart_sell_select_paire">
-      </select>
-    </td>
-    <td><input id="smart_sell_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234"></td>
-    <td><input id="smart_sell_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur en %, ex 1.5"></td>
-    <td><input id="smart_sell_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555"></td>
-    <td> <button type="button" onclick="smart_sell(false)" id="smart_sell_button_test" class="btn btn-secondary">Test</button></td>
-    <td><button type="button" onclick="smart_sell(true)" id="smart_sell_button" class="btn btn-danger">Vendre pour de vrai</button></td>
-    <td>Solde dispo : </td>
-  </tr></table>
+    <table><tr>
+      <td>
+        <select class="form-select" id="smart_sell_select_paire">
+        </select>
+      </td>
+      <td><input id="smart_sell_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234"></td>
+      <td><input id="smart_sell_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur en %, ex 1.5"></td>
+      <td><input id="smart_sell_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555"></td>
+      <td> <button type="button" onclick="smart_sell(false)" id="smart_sell_button_test" class="btn btn-secondary">Test</button></td>
+      <td><button type="button" onclick="smart_sell(true)" id="smart_sell_button" class="btn btn-danger">Vendre pour de vrai</button></td>
+      <td>Solde dispo : </td>
+    </tr></table>
 
-  <table class="table table-dark table-striped">
-    <thead>
-      <tr>
-        <th>Paire</th>
-        <th>Prix CIBLE</th>
-        <th>Ecart déclencheur</th>
-        <th>Quantité</th>
-        <th>Etat</th>
-        <th></th>
-        <th>Prix ACTUEL</th>
-        <th>PLUS_HAUT</th>
-        <th>Diff prix ACTUEL/PLUS_HAUT</th>
-        <th>Date début</th>
-        <th>Date CIBLE touchée</th>
-        <th>Date vente</th>
-      </tr>
-    </thead>
-    <tbody>
-  
-  
-  
-      <tr>
-        <th id="smart_sell_paire"></th>
-        <th id="smart_sell_prix_cible"></th>
-        <td id="smart_sell_ecart"></td>
-        <th id="smart_sell_quantite"></th>
-        <td  id="smart_sell_etat"></td>
-        <td  id="smart_sell_annuler_button"><button type="button" onclick="cancel_smart_sell()" class="btn btn-warning">Annuler</button></td>
-        <td id="smart_sell_prix_actuel"></td>
-        <td  id="smart_sell_plus_haut"></td>
-        <td id="smart_sell_diff"></td>
-        <td id="smart_sell_date_debut"></td>
-        <td id="smart_sell_date_cible"></td>
-        <td id="smart_sell_date_vente"></td>
-      </tr>
-  
-  
-  
-    </tbody>
-  </table>
-
-
-
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Paire</th>
+          <th>Prix CIBLE</th>
+          <th>Ecart déclencheur</th>
+          <th>Quantité</th>
+          <th>Etat</th>
+          <th></th>
+          <th>Prix ACTUEL</th>
+          <th>PLUS_HAUT</th>
+          <th>Diff prix ACTUEL/PLUS_HAUT</th>
+          <th>Date début</th>
+          <th>Date CIBLE touchée</th>
+          <th>Date vente</th>
+        </tr>
+      </thead>
+      <tbody>
+    
+    
+    
+        <tr>
+          <th id="smart_sell_paire"></th>
+          <th id="smart_sell_prix_cible"></th>
+          <td id="smart_sell_ecart"></td>
+          <th id="smart_sell_quantite"></th>
+          <td  id="smart_sell_etat"></td>
+          <td  id="smart_sell_annuler_button"><button type="button" onclick="cancel_smart_sell()" class="btn btn-warning">Annuler</button></td>
+          <td id="smart_sell_prix_actuel"></td>
+          <td  id="smart_sell_plus_haut"></td>
+          <td id="smart_sell_diff"></td>
+          <td id="smart_sell_date_debut"></td>
+          <td id="smart_sell_date_cible"></td>
+          <td id="smart_sell_date_vente"></td>
+        </tr>
+    
+    
+    
+      </tbody>
+    </table>
 
 
   </body>
 
 
+  <script src="init.js"></script>
+  <script src="smart_buy.js"></script>
+  <script src="smart_sell.js"></script>
 
 
-<script>
 
-//init cle / secret api
-var cle="";
-var secret="";
-//config du modal
-var myModal = new bootstrap.Modal(document.getElementById('modalCleAPI'), {
-  keyboard: false,
-  backdrop: 'static'
-  });
+  <script>
 
-//si click sur bouton commencer, ferme modal et attribut valeur cle/secret api
-function saisie_cle_api() {
-  cle = document.getElementById("cle").innerHTML;
-  secret = document.getElementById("secret").innerHTML;
-  console.log("clé et secret API attribués");
-  myModal.hide()
 
-  console.log("test encrypt pour la future requete signé si ordre - > HMAC SHA256 : "+CryptoJS.HmacSHA256("query", secret));
-}
 
-//quand page prete
-window.addEventListener('load', function () {
+  //TO DO
+  //add quantite dispo sur wallet spot binance de la paire select
+  //xmlhttp market buy/sell if real_buy / real_sell
+  //creer array pour plusieurs smart sell/buy
+  //ameliorer interface  //responsiv design
+  //mettre bouton cacher tradingview
+  //bouton cible actuel profiter pump/dump ! - changer fonctionnalites.html alors
+  //mettre code smart sell/buy dans js ext avec separation fonction get price + order buy / sell
 
-  //rempli le select avec coins existant sur binance
-  var xmlhttp = new XMLHttpRequest();
-    var url = "https://api.binance.com/api/v3/ticker/price";
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            for(i = 0; i < myArr.length; i++) {
-              document.getElementById("smart_buy_select_paire").options[document.getElementById("smart_buy_select_paire").length] = new Option(myArr[i].symbol, myArr[i].symbol);
-              document.getElementById("smart_sell_select_paire").options[document.getElementById("smart_sell_select_paire").length] = new Option(myArr[i].symbol, myArr[i].symbol);
-            }
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+
+
+  /*
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", 'https://api.binance.com/api/v3/order', true);
+
+  //Envoie les informations du header adaptées avec la requête
+  //xhr.setRequestHeader("User-Agent", "Mozilla/4.0 (compatible; PHP Binance API)");//X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A
+  //xhr.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3");
+  //xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  xhr.onreadystatechange = function() { //Appelle une fonction au changement d'état.
+      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+  // Requête finie, traitement ici.
+        console.log(JSON.parse(this.responseText));
+      }
+  }
+  xhr.send("symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365&signature=c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a");
   
-  //ouvre le modal
-  myModal.show();
-});
-
-
-
-
-
-
-// ------------! SMART BUY !------------
-
-var smart_buy_paire = null;
-var smart_buy_prix_cible = null;
-var smart_buy_ecart = null;
-var smart_buy_quantite = null;
-//smart_buy_etat -1 en attente / 0 cible touchée / > 0 prix vendu
-var smart_buy_etat = -1;
-var smart_buy_prix_actuel = null;
-var smart_buy_plus_bas = null;
-var smart_buy_diff = null;
-var smart_buy_date_debut = null;
-var smart_buy_date_cible = null;
-var smart_buy_date_vente = null;
-
-var smart_buy_activated = false;
-var real_buy = false;
-
-function smart_buy(real_buy_local){
-  real_buy = real_buy_local;
-  //recupere les infos
-  smart_buy_paire = document.getElementById('smart_buy_select_paire').options[document.getElementById('smart_buy_select_paire').selectedIndex].value;
-  smart_buy_prix_cible = document.getElementById("smart_buy_input_prix_cible").value;
-  smart_buy_ecart = document.getElementById("smart_buy_input_ecart").value;
-  smart_buy_quantite = document.getElementById("smart_buy_input_quantite").value;
-
-  smart_buy_activated = true;
-
-  //insert premieres infos dans tab
-  document.getElementById("smart_buy_paire").innerHTML = smart_buy_paire;
-  document.getElementById("smart_buy_prix_cible").innerHTML = smart_buy_prix_cible;
-  document.getElementById("smart_buy_ecart").innerHTML = "+ "+smart_buy_ecart+" %";
-  document.getElementById("smart_buy_quantite").innerHTML = smart_buy_quantite;
-
-  document.getElementById("smart_buy_etat").innerHTML = "En attente";
-
-  var now = new Date();
-  document.getElementById("smart_buy_date_debut").innerHTML = now.getDate()+"/"+(now.getMonth() + 1) +" à "+now.getHours()+"h"+now.getMinutes()+"m"+now.getSeconds()+"s";
-
-
-}
-
-//DEBUT CYCLE HORLOGE - TOUTE LES 1 SECONDES si smart buy en cours d'operation
-var rep_recu_buy=1;
-setInterval(function(){ 
-
-  if(rep_recu_buy==1 && smart_buy_activated){
-
-    var xmlhttp_buy = new XMLHttpRequest();
-    var url = "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT";
-
-
-    xmlhttp_buy.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            smart_buy_prix_actuel = myArr.price;
-
-            //TRAITEMENT DEBUT
-
-            //seuil atteint
-            if(smart_buy_prix_actuel <= smart_buy_prix_cible && smart_buy_etat==-1){
-              smart_buy_etat=0;
-              document.getElementById("smart_buy_etat").innerHTML = "Cible touchée";
-              smart_buy_plus_bas=999999999999; //1000 milliards -1 on a de la marge bg
-
-              var now = new Date();
-              document.getElementById("smart_buy_date_cible").innerHTML = now.getDate()+"/"+(now.getMonth() + 1) +" à "+now.getHours()+"h"+now.getMinutes()+"m"+now.getSeconds()+"s";
-            }
-
-            //si pas encore vendu depuis seuil atteint
-            if(smart_buy_etat==0){
-
-              //si nouveau bas
-              if(smart_buy_prix_actuel<=smart_buy_plus_bas){
-                  //on suit la baisse
-                  smart_buy_plus_bas = smart_buy_prix_actuel;
-                  document.getElementById("smart_buy_plus_bas").innerHTML = smart_buy_plus_bas;
-              }
-              else{
-                  smart_buy_diff = ((smart_buy_prix_actuel/smart_buy_plus_bas)*100)-100;
-                  document.getElementById("smart_buy_diff").innerHTML = "+ "+smart_buy_diff + " %";
-                  //sinon si prix >= dernier bas * -x %    equivalent à si smart_buy_diff >= x
-                  if(smart_buy_prix_actuel>=smart_buy_plus_bas*(1+(smart_buy_ecart/100))){
-                      //montée de x % par rapport au dernier bas
-                      //on achete.
-                      smart_buy_etat=smart_buy_prix_actuel;
-                      document.getElementById("smart_buy_etat").innerHTML = "Acheté à "+smart_buy_etat;
-
-                      var now = new Date();
-                      document.getElementById("smart_buy_date_vente").innerHTML = now.getDate()+"/"+(now.getMonth() + 1) +" à "+now.getHours()+"h"+now.getMinutes()+"m"+now.getSeconds()+"s";
-                  }
-              }
-
-            }
-
-            //TRAITEMENT FIN
-
-            document.getElementById("smart_buy_prix_actuel").innerHTML = smart_buy_prix_actuel;
-            rep_recu_buy=1;
-        }
-    };
-    xmlhttp_buy.open("GET", url, true);
-    xmlhttp_buy.send();
-
-    rep_recu_buy=0;
-
-  }
-
-  if(rep_recu_buy==1 && !smart_buy_activated){
-    document.getElementById("smart_buy_paire").innerHTML = "";
-    document.getElementById("smart_buy_prix_cible").innerHTML = "";
-    document.getElementById("smart_buy_ecart").innerHTML = "";
-    document.getElementById("smart_buy_quantite").innerHTML = "";
-    document.getElementById("smart_buy_etat").innerHTML = "";
-    document.getElementById("smart_buy_prix_actuel").innerHTML = "";
-    document.getElementById("smart_buy_plus_bas").innerHTML = "";
-    document.getElementById("smart_buy_diff").innerHTML = "";
-    document.getElementById("smart_buy_date_debut").innerHTML = "";
-    document.getElementById("smart_buy_date_cible").innerHTML = "";
-    document.getElementById("smart_buy_date_vente").innerHTML = "";
-    smart_buy_paire = null;
-    smart_buy_prix_cible = null;
-    smart_buy_ecart = null;
-    smart_buy_quantite = null;
-    smart_buy_etat = -1;
-    smart_buy_prix_actuel = null;
-    smart_buy_plus_bas = null;
-    smart_buy_diff = null;
-    smart_buy_date_debut = null;
-    smart_buy_date_cible = null;
-    smart_buy_date_vente = null;
-    smart_buy_activated = false;
-    real_buy = false;
-  }
-
-}, 1000);//1000ms => 1sec ;)
-//FIN CYCLE HORLOGE
-
-function cancel_smart_buy(){
-  smart_buy_activated = false;
-}
-
-// ------------! FIN SMART BUY !------------
-
-
-
-
-
-// ------------! SMART SELL !------------
-
-var smart_sell_paire = null;
-var smart_sell_prix_cible = null;
-var smart_sell_ecart = null;
-var smart_sell_quantite = null;
-//smart_sell_etat -1 en attente / 0 cible touchée / > 0 prix vendu
-var smart_sell_etat = -1;
-var smart_sell_prix_actuel = null;
-var smart_sell_plus_bas = null;
-var smart_sell_diff = null;
-var smart_sell_date_debut = null;
-var smart_sell_date_cible = null;
-var smart_sell_date_vente = null;
-
-var smart_sell_activated = false;
-var real_sell = false;
-
-function smart_sell(real_sell_local){
-  real_sell = real_sell_local;
-  //recupere les infos
-  smart_sell_paire = document.getElementById('smart_sell_select_paire').options[document.getElementById('smart_sell_select_paire').selectedIndex].value;
-  smart_sell_prix_cible = document.getElementById("smart_sell_input_prix_cible").value;
-  smart_sell_ecart = document.getElementById("smart_sell_input_ecart").value;
-  smart_sell_quantite = document.getElementById("smart_sell_input_quantite").value;
-
-  smart_sell_activated = true;
-
-  //insert premieres infos dans tab
-  document.getElementById("smart_sell_paire").innerHTML = smart_sell_paire;
-  document.getElementById("smart_sell_prix_cible").innerHTML = smart_sell_prix_cible;
-  document.getElementById("smart_sell_ecart").innerHTML = "- "+smart_sell_ecart+" %";
-  document.getElementById("smart_sell_quantite").innerHTML = smart_sell_quantite;
-
-  document.getElementById("smart_sell_etat").innerHTML = "En attente";
-
-  var now = new Date();
-  document.getElementById("smart_sell_date_debut").innerHTML = now.getDate()+"/"+(now.getMonth() + 1) +" à "+now.getHours()+"h"+now.getMinutes()+"m"+now.getSeconds()+"s";
-
-
-}
-
-//DEBUT CYCLE HORLOGE - TOUTE LES 1 SECONDES si smart sell en cours d'operation
-var rep_recu_sell=1;
-setInterval(function(){ 
-
-  if(rep_recu_sell==1 && smart_sell_activated){
-
-    var xmlhttp_sell = new XMLHttpRequest();
-    var url = "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT";
-
-
-    xmlhttp_sell.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            smart_sell_prix_actuel = myArr.price;
-
-            //TRAITEMENT DEBUT
-
-            //seuil atteint
-            if(smart_sell_prix_actuel >= smart_sell_prix_cible && smart_sell_etat==-1){
-              smart_sell_etat=0;
-              document.getElementById("smart_sell_etat").innerHTML = "Cible touchée";
-              smart_sell_plus_haut=0;
-
-              var now = new Date();
-              document.getElementById("smart_sell_date_cible").innerHTML = now.getDate()+"/"+(now.getMonth() + 1) +" à "+now.getHours()+"h"+now.getMinutes()+"m"+now.getSeconds()+"s";
-            }
-
-            //si pas encore vendu depuis seuil atteint
-            if(smart_sell_etat==0){
-
-              //si nouveau top
-              if(smart_sell_prix_actuel>=smart_sell_plus_haut){
-                  //on suit la montée
-                  smart_sell_plus_haut = smart_sell_prix_actuel;
-                  document.getElementById("smart_sell_plus_haut").innerHTML = smart_sell_plus_haut;
-              }
-              else{
-                  smart_sell_diff = 100-((smart_sell_prix_actuel/smart_sell_plus_haut)*100);
-                  document.getElementById("smart_sell_diff").innerHTML = "- "+smart_sell_diff + " %";
-                  //sinon si prix <= dernier top * -x %    equivalent à si smart_sell_diff <= x
-                  if(smart_sell_prix_actuel<=smart_sell_plus_haut*(1-(smart_sell_ecart/100))){
-                      //baise de x % par rapport au dernier top
-                      //on vend.
-                      smart_sell_etat=smart_sell_prix_actuel;
-                      document.getElementById("smart_sell_etat").innerHTML = "Vendu à "+smart_sell_etat;
-
-                      var now = new Date();
-                      document.getElementById("smart_sell_date_vente").innerHTML = now.getDate()+"/"+(now.getMonth() + 1) +" à "+now.getHours()+"h"+now.getMinutes()+"m"+now.getSeconds()+"s";
-                  }
-              }
-
-            }
-
-            //TRAITEMENT FIN
-
-            document.getElementById("smart_sell_prix_actuel").innerHTML = smart_sell_prix_actuel;
-            rep_recu_sell=1;
-        }
-    };
-    xmlhttp_sell.open("GET", url, true);
-    xmlhttp_sell.send();
-
-    rep_recu_sell=0;
-
-  }
-
-  if(rep_recu_sell==1 && !smart_sell_activated){
-    document.getElementById("smart_sell_paire").innerHTML = "";
-    document.getElementById("smart_sell_prix_cible").innerHTML = "";
-    document.getElementById("smart_sell_ecart").innerHTML = "";
-    document.getElementById("smart_sell_quantite").innerHTML = "";
-    document.getElementById("smart_sell_etat").innerHTML = "";
-    document.getElementById("smart_sell_prix_actuel").innerHTML = "";
-    document.getElementById("smart_sell_plus_haut").innerHTML = "";
-    document.getElementById("smart_sell_diff").innerHTML = "";
-    document.getElementById("smart_sell_date_debut").innerHTML = "";
-    document.getElementById("smart_sell_date_cible").innerHTML = "";
-    document.getElementById("smart_sell_date_vente").innerHTML = "";
-    smart_sell_paire = null;
-    smart_sell_prix_cible = null;
-    smart_sell_ecart = null;
-    smart_sell_quantite = null;
-    smart_sell_etat = -1;
-    smart_sell_prix_actuel = null;
-    smart_sell_plus_bas = null;
-    smart_sell_diff = null;
-    smart_sell_date_debut = null;
-    smart_sell_date_cible = null;
-    smart_sell_date_vente = null;
-    smart_sell_activated = false;
-    real_sell = false;
-  }
-
-}, 1000);//1000ms => 1sec ;)
-//FIN CYCLE HORLOGE
-
-function cancel_smart_sell(){
-  smart_sell_activated = false;
-}
-
-// ------------! FIN SMART SELL !------------
-
-
-
-
-
-
-
-//TO DO
-//add quantite dispo sur wallet spot binance de la paire select
-//xmlhttp market buy/sell if real_buy / real_sell
-//creer array pour plusieurs smart sell/buy
-//ameliorer interface  //responsiv design
-//mettre bouton cacher tradingview
-//bouton cible actuel profiter pump/dump ! - changer fonctionnalites.html alors
-//mettre code smart sell/buy dans js ext avec separation fonction get price + order buy / sell
-
-
-
-/*
-var xhr = new XMLHttpRequest();
-xhr.open("POST", 'https://api.binance.com/api/v3/order', true);
-
-//Envoie les informations du header adaptées avec la requête
-//xhr.setRequestHeader("User-Agent", "Mozilla/4.0 (compatible; PHP Binance API)");//X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A
-//xhr.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3");
-//xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-xhr.onreadystatechange = function() { //Appelle une fonction au changement d'état.
-    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-// Requête finie, traitement ici.
-      console.log(JSON.parse(this.responseText));
-    }
-}
-xhr.send("symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365&signature=c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a");
 */
 
 
 
-var xmlhttp_test = new XMLHttpRequest();
-    //var url = "https://cors-escape.herokuapp.com/https://api.binance.com/api/v3/order";
-    var url = "https://cors-anywhere.herokuapp.com/https://api.binance.com/api/v3/order/test";
 
-
-    xmlhttp_test.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            console.log(myArr);
-        }
-    };
-    xmlhttp_test.open("POST", url, true);
-    //xmlhttp_test.withCredentials = false; 
-    //xmlhttp_test.setRequestHeader("Access-Control-Allow-Credentials", "true");
-    //xmlhttp_test.setRequestHeader("Access-Control-Allow-Origin", "https://cryptochancla.github.io");
-    xmlhttp_test.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3");
-    xmlhttp_test.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp_test.send("symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365&signature=c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a");
-
- 
+  
 
 
 
 
 
-/*
-REQUETE AVANT SIGNED :
-order , opt = Array ( [symbol] => BTCUSDT [side] => BUY [type] => LIMIT [quantity] => 1.2 [recvWindow] => 60000 [price] => 50000.2 [timeInForce] => GTC ) , POST
-dans fonction SIGNED
-query :
-symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365
-on crypte la query avec le secret, ca donne : c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a
-nouveau opt =>
-Array ( [http] => Array ( [method] => POST [ignore_errors] => 1 [header] => User-Agent: Mozilla/4.0 (compatible; PHP Binance API) X-MBX-APIKEY: Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3 Content-type: application/x-www-form-urlencoded ) )
-parameters encoded as POST data (in variable context) =>
-endpoint = https://api.binance.com/api/v3/order
-postdate = symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365&signature=c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a
-postdate qui va dans var opt['http']['content']
-on arrive a la finArray ( [code] => -2010 [msg] => Account has insufficient balance for requested action. )
-*/
+  /*
+  REQUETE AVANT SIGNED :
+  order , opt = Array ( [symbol] => BTCUSDT [side] => BUY [type] => LIMIT [quantity] => 1.2 [recvWindow] => 60000 [price] => 50000.2 [timeInForce] => GTC ) , POST
+  dans fonction SIGNED
+  query :
+  symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365
+  on crypte la query avec le secret, ca donne : c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a
+  nouveau opt =>
+  Array ( [http] => Array ( [method] => POST [ignore_errors] => 1 [header] => User-Agent: Mozilla/4.0 (compatible; PHP Binance API) X-MBX-APIKEY: Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3 Content-type: application/x-www-form-urlencoded ) )
+  parameters encoded as POST data (in variable context) =>
+  endpoint = https://api.binance.com/api/v3/order
+  postdate = symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365&signature=c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a
+  postdate qui va dans var opt['http']['content']
+  on arrive a la finArray ( [code] => -2010 [msg] => Account has insufficient balance for requested action. )
+  */
 
-/*
-Access to XMLHttpRequest at 'https://api.binance.com/api/v3/order' from origin 'null' has been blocked by CORS policy: Request header field x-mbx-apikey is not allowed by Access-Control-Allow-Headers in preflight response.
-index.html:581 POST https://api.binance.com/api/v3/order? net::ERR_FAILED
-
-
-
-(HMAC SHA256)
-    $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order' -d 'symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71'
+  /*
+  Access to XMLHttpRequest at 'https://api.binance.com/api/v3/order' from origin 'null' has been blocked by CORS policy: Request header field x-mbx-apikey is not allowed by Access-Control-Allow-Headers in preflight response.
+  index.html:581 POST https://api.binance.com/api/v3/order? net::ERR_FAILED
 
 
-    (HMAC SHA256)
-   $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order?symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71'
- 
-   $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order?symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC' -d 'quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=0fd168b8ddb4876a0358a8d14d0c9f3da0e9b20c5d52b2a00fcf7d1c602f9a77'
 
-*/
+  (HMAC SHA256)
+      $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order' -d 'symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71'
 
 
-</script>
+      (HMAC SHA256)
+    $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order?symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71'
+  
+    $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order?symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC' -d 'quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=0fd168b8ddb4876a0358a8d14d0c9f3da0e9b20c5d52b2a00fcf7d1c602f9a77'
+
+  */
+
+  </script>
 
 
 </html>
