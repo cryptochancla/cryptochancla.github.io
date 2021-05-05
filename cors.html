@@ -61,8 +61,7 @@
       en fait cryptochancla.herokuapp.com c'est juste un proxy CORS https://github.com/cryptochancla/cors-anywhere</p>
       
       <p>pour faire une requete signée sur l'API Binance, faut un header custom : "X-MBX-APIKEY"
-      et comme le serveur de l'api binance n'a pas configuré de CORS pour fonctionner avec un requete fleshlight du navigateur
-      bah ca bloque</p>
+      et comme le serveur de l'api binance n'a pas configuré de CORS pour fonctionner avec un requete fleshlight emise par le navigateur bah ça bloque</p>
       
       <p>et ca me fait trop chier parce que oui c'est le seul truc qui peut faire douter d'un point de vue extérieur
       mais tu viens de me donner une idée : je vais rajouter un input pour insérer son propre lien proxy cors</p>
@@ -71,14 +70,14 @@
         <br>"</p>
     
     <h3>Conclusion</h3>
-    <p>vous pouvez utiliser mon proxy cors (https://cryptochancla.herokuapp.com/) qui est un simple fork de https://github.com/cryptochancla/cors-anywhere, dans ce cas rien à faire. Laissez le champ proxy cors vide.</p>
+    <p>Vous pouvez utiliser mon proxy cors (https://cryptochancla.herokuapp.com/) qui est un simple fork de https://github.com/Rob--W/cors-anywhere<br>Dans ce cas rien à faire. Laissez le champ proxy cors vide.</p>
     <p>Ou vous pouvez créer le votre de la même façon.</p>
     
 
     <h3>Créer son proxy cors en 2 minutes :</h3>
     <ul>
       <li>Inscrivez vous/Connectez vous sur herokuapp.com, choisissez NodeJS</li>
-      <li>Inscrivez vous/Connectez vous sur github.com, forkez le projet https://github.com/cryptochancla/cors-anywhere</li>
+      <li>Inscrivez vous/Connectez vous sur github.com, forkez le projet https://github.com/Rob--W/cors-anywhere</li>
       <li>Synchronisez votre herokuapp avec le dépot github que vous venez de forker</li>
       <li>Activez le déploiement automatique sur herokuapp</li>
     </ul>
