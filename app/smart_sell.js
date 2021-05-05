@@ -52,7 +52,7 @@ setInterval(function(){
   if(rep_recu_sell==1 && smart_sell_activated){
 
     var xmlhttp_sell = new XMLHttpRequest();
-    var url = "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT";
+    var url = "https://api.binance.com/api/v3/ticker/price?symbol="+smart_sell_paire;
 
 
     xmlhttp_sell.onreadystatechange = function() {
