@@ -47,16 +47,16 @@
 
   <main class="px-3">
     <p>
-    <code>"<br>
+    <code>&#147;<br>
       Ok c'est que du front-end mais pourquoi tu as besoin de faire les requêtes vers ton serveur ?
 
       smart_buy.js ligne 169<br>
       
       &lt;&lt;<br>var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";<br>&gt;&gt;<br>
       N'utilisez pas un site auquel vous n'avez aucune confiance les kheys.
-      <br>"</code>
+      <br>&#148;</code>
 </p>
-    <p>"<br>
+    <p>&#147;<br>
       alors ca vraiment ça a été la plus grosse difficultée, je texplique :
       en fait cryptochancla.herokuapp.com c'est juste un proxy CORS https://github.com/cryptochancla/cors-anywhere</p>
       
@@ -67,7 +67,7 @@
       mais tu viens de me donner une idée : je vais rajouter un input pour insérer son propre lien proxy cors</p>
       
       <p>il faut créer son propre proxy cors (trèss facile et rapide sur herokuapp) parce que les proxy cors qu'on trouve sur google, leur IP a été trop utilisée sur binance, du coup "HTTP 403 return code is used when the WAF Limit (Web Application Firewall) has been violated."
-        <br>"</p>
+        <br>&#148;</p>
     
     <h3>Conclusion</h3>
     <p>Vous pouvez utiliser mon proxy cors (https://cryptochancla.herokuapp.com/) qui est un simple fork de https://github.com/Rob--W/cors-anywhere<br>Dans ce cas rien à faire. Laissez le champ proxy cors vide.</p>
