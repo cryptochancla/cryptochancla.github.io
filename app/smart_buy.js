@@ -1,4 +1,8 @@
 // ------------! SMART BUY !------------
+var real_buy = false;
+var go_buy = false;
+
+
 
 var smart_buy_paire = null;
 var smart_buy_prix_cible = null;
@@ -14,7 +18,6 @@ var smart_buy_date_cible = null;
 var smart_buy_date_vente = null;
 
 var smart_buy_activated = false;
-var real_buy = false;
 
 function smart_buy(real_buy_local){
   real_buy = real_buy_local;
@@ -85,32 +88,7 @@ setInterval(function(){
                   if(smart_buy_prix_actuel>=smart_buy_plus_bas*(1+(smart_buy_ecart/100))){
                       //montée de x % par rapport au dernier bas
                       //on achete.
-
-
-
-/*
-                      var query = "symbol=BNBUSDT&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=600.5&recvWindow=5000&timestamp="+serverTime;
-                      var query_signed = CryptoJS.HmacSHA256(query, "0MkzEozy64jF0y9Zf4dnBsUbTIlgPjSwGMSNWOmQ78l9fbxzje6d7ivMYCUFkUML"); //crypt query avec secret de la cle api 
-                  
-                      var xmlhttp_test = new XMLHttpRequest();
-                      var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";
-                  
-                  
-                      xmlhttp_test.onreadystatechange = function() {
-                          if (this.readyState == 4 && this.status == 200) {
-                              var myArr = JSON.parse(this.responseText);
-                              console.log(myArr);
-                          }
-                      };
-                      xmlhttp_test.open("POST", url, true);
-                      xmlhttp_test.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3"); // cle api
-                      xmlhttp_test.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                      xmlhttp_test.send(query+"&signature="+query_signed);
-*/
-
-
-
-
+                      go_buy = true;
 
                       smart_buy_etat=smart_buy_prix_actuel;
                       document.getElementById("smart_buy_etat").innerHTML = "Acheté à "+smart_buy_etat;
@@ -168,5 +146,51 @@ setInterval(function(){
 function cancel_smart_buy(){
   smart_buy_activated = false;
 }
+
+
+
+
+// ******* ICI ON ACHETE VRAIMENT *************** //
+//si smart buy completé
+
+var rep_recu_go_buy=1;
+setInterval(function(){ 
+
+
+  if(real_buy && go_buy){
+
+
+    if(rep_recu_go_buy==1){
+        var xmlhttp_go_buy = new XMLHttpRequest();
+
+        var query = "symbol="+smart_buy_paire+"&side=BUY&type=MARKET&quantity="+smart_buy_quantite+"&recvWindow=5000&timestamp="+serverTime;
+        var query_signed = CryptoJS.HmacSHA256(query, secret); //crypt query avec secret de la cle api 
+
+        var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";
+
+        xmlhttp_go_buy.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myArr = JSON.parse(this.responseText);
+                console.log(myArr);
+
+                rep_recu_go_buy=1;
+                go_buy = false;
+            }
+        };
+
+        xmlhttp_go_buy.open("POST", url, true);
+        xmlhttp_go_buy.setRequestHeader("X-MBX-APIKEY", cle); // cle api
+        xmlhttp_go_buy.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp_go_buy.send(query+"&signature="+query_signed);
+        
+        rep_recu_go_buy=0;
+      }
+
+
+  }  
+
+
+}, 100); //100ms de retard max entre le traitement et lenvoie de lordre à bibi
+
 
 // ------------! FIN SMART BUY !------------

@@ -1,4 +1,8 @@
 // ------------! SMART SELL !------------
+var real_sell = false;
+var go_sell = false;
+
+
 
 var smart_sell_paire = null;
 var smart_sell_prix_cible = null;
@@ -14,7 +18,6 @@ var smart_sell_date_cible = null;
 var smart_sell_date_vente = null;
 
 var smart_sell_activated = false;
-var real_sell = false;
 
 function smart_sell(real_sell_local){
   real_sell = real_sell_local;
@@ -85,6 +88,8 @@ setInterval(function(){
                   if(smart_sell_prix_actuel<=smart_sell_plus_haut*(1-(smart_sell_ecart/100))){
                       //baise de x % par rapport au dernier top
                       //on vend.
+                      go_sell = true;
+
                       smart_sell_etat=smart_sell_prix_actuel;
                       document.getElementById("smart_sell_etat").innerHTML = "Vendu à "+smart_sell_etat;
 

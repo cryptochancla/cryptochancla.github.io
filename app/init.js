@@ -26,7 +26,7 @@ window.addEventListener('load', function () {
         e.style.height = 650+"px";
     }
     else{
-        e.style.height = 450+"px";
+        e.style.height = 410+"px";
     }
 
   //rempli le select avec coins existant sur binance
