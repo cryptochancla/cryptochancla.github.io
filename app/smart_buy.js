@@ -175,6 +175,7 @@ setInterval(function(){
 
                 rep_recu_go_buy=1;
                 go_buy = false;
+                maj_balance = true;
             }
         };
 

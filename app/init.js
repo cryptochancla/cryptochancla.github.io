@@ -1,6 +1,7 @@
 //init cle / secret api
 var cle="";
 var secret="";
+var maj_balance=false;
 //config du modal
 var myModal = new bootstrap.Modal(document.getElementById('modalCleAPI'), {
   keyboard: false,
@@ -13,6 +14,7 @@ var myModal = new bootstrap.Modal(document.getElementById('modalCleAPI'), {
 function saisie_cle_api() {
   cle = document.getElementById("cle").value;
   secret = document.getElementById("secret").value;
+  maj_balance = true;
   myModal.hide()
 }
 
@@ -82,7 +84,7 @@ setInterval(function(){
 var rep_recu_balance=1;
 setInterval(function(){ 
 
-    if(serverTime>0 && cle!="" && secret!=""){
+    if(serverTime>0 && cle!="" && secret!="" && maj_balance){
 
         if(rep_recu_balance==1){
             var xmlhttp_balance = new XMLHttpRequest();
@@ -110,6 +112,7 @@ setInterval(function(){
                         document.getElementById("balance").innerHTML = "Faut remplir son compte Spot mon ptit pote !";
                     }
 
+                    maj_balance = false;
                     rep_recu_balance=1;
                 }
             };

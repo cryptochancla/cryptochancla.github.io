@@ -174,6 +174,7 @@ setInterval(function(){
 
                 rep_recu_go_sell=1;
                 go_sell = false;
+                maj_balance = true;
             }
         };
 
