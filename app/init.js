@@ -1,7 +1,10 @@
 //init cle / secret api
 var cle="";
 var secret="";
+var proxy_cors="";
+
 var maj_balance=false;
+
 //config du modal
 var myModal = new bootstrap.Modal(document.getElementById('modalCleAPI'), {
   keyboard: false,
@@ -14,6 +17,9 @@ var myModal = new bootstrap.Modal(document.getElementById('modalCleAPI'), {
 function saisie_cle_api() {
   cle = document.getElementById("cle").value;
   secret = document.getElementById("secret").value;
+  proxy_cors = document.getElementById("proxy_cors").value;
+  if(proxy_cors==""){proxy_cors="https://cryptochancla.herokuapp.com/";}
+
   maj_balance = true;
   myModal.hide()
 }
@@ -92,7 +98,7 @@ setInterval(function(){
             var query = "timestamp="+serverTime;
             var query_signed = CryptoJS.HmacSHA256(query, secret); //crypt query avec secret de la cle api 
             
-            var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/account?"+query+"&signature="+query_signed;
+            var url = proxy_cors+"https://api.binance.com/api/v3/account?"+query+"&signature="+query_signed;
             xmlhttp_balance.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     var myArr = JSON.parse(this.responseText).balances;

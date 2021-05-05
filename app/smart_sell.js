@@ -165,7 +165,7 @@ setInterval(function(){
         var query = "symbol="+smart_sell_paire+"&side=SELL&type=MARKET&quantity="+smart_sell_quantite+"&recvWindow=5000&timestamp="+serverTime;
         var query_signed = CryptoJS.HmacSHA256(query, secret); //crypt query avec secret de la cle api 
 
-        var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";
+        var url = proxy_cors+"https://api.binance.com/api/v3/order";
 
         xmlhttp_go_sell.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
