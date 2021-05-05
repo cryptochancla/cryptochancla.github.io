@@ -46,7 +46,7 @@
   </header>
 
   <main class="px-3">
-
+    <p>
     <code>
       Ok c'est que du front-end mais pourquoi tu as besoin de faire les requêtes vers ton serveur ?
 
@@ -55,25 +55,25 @@
       var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";
       N'utilisez pas un site auquel vous n'avez aucune confiance les kheys.
     </code>
-
+</p>
     <p>
       alors ca vraiment ca a ete la plus grosse difficultée, je texplique :
-      en fait sur cryptochancla.herokuapp.com c'est juste un proxy CORS : https://github.com/cryptochancla/cors-anywhere
+      en fait sur cryptochancla.herokuapp.com c'est juste un proxy CORS : https://github.com/cryptochancla/cors-anywhere</p>
       
-      c'est le truc relou en fait, pour faire une requete signée sur l'API Binance, faut un header custom : "X-MBX-APIKEY"
+      <p>c'est le truc relou en fait, pour faire une requete signée sur l'API Binance, faut un header custom : "X-MBX-APIKEY"
       et comme le serveur de l'api binance n'a pas configuré de CORS pour fonctionner avec un requete fleshlight du navigateur
-      bah ca bloque
+      bah ca bloque</p>
       
-      et ca me fait trop chier parce que oui c'est le seul truc qui peut faire douter d'un point de vue extérieur
-      mais tu viens de me donner une idée : je vais rajouter un input pour insérer son propre lien proxy cors
+      <p>et ca me fait trop chier parce que oui c'est le seul truc qui peut faire douter d'un point de vue extérieur
+      mais tu viens de me donner une idée : je vais rajouter un input pour insérer son propre lien proxy cors</p>
       
-      le truc à savoir c'est qu'il faut créer son propre proxy cors (tres facile sur herokuapp) parceque les proxy cors qu'on trouve sur google, leur IP a été trop utilisée sur binance, du coup "HTTP 403 return code is used when the WAF Limit (Web Application Firewall) has been violated."
-      <br> </p>
+      <p>le truc à savoir c'est qu'il faut créer son propre proxy cors (tres facile sur herokuapp) parceque les proxy cors qu'on trouve sur google, leur IP a été trop utilisée sur binance, du coup "HTTP 403 return code is used when the WAF Limit (Web Application Firewall) has been violated."
+    </p>
     
     <h3>Conclusion</h3>
-    <p>vous pouvez utiliser mon proxy cors (https://cryptochancla.herokuapp.com/) qui est un simple fork de https://github.com/cryptochancla/cors-anywhere, dans ce cas rien à faire. Laissez le champ proxy cors vide.<br>
-    ou vous pouvez créer le votre de la même façon.<br>
-    </p>
+    <p>vous pouvez utiliser mon proxy cors (https://cryptochancla.herokuapp.com/) qui est un simple fork de https://github.com/cryptochancla/cors-anywhere, dans ce cas rien à faire. Laissez le champ proxy cors vide.</p>
+    <p>Ou vous pouvez créer le votre de la même façon.</p>
+    
 
     <h3>Créer son proxy cors en 2 minutes :</h3>
     <ul>
