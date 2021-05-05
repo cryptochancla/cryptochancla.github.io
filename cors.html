@@ -57,28 +57,28 @@
       <br>&#148;</code>
 </p>
     <p>&#147;<br>
-      alors ca vraiment ça a été la plus grosse difficultée, je texplique :
+      Alors ca vraiment ça a été la plus grosse difficultée, je texplique :
       en fait cryptochancla.herokuapp.com c'est juste un proxy CORS https://github.com/cryptochancla/cors-anywhere</p>
       
-      <p>pour faire une requete signée sur l'API Binance, faut un header custom : "X-MBX-APIKEY"
-      et comme le serveur de l'api binance n'a pas configuré de CORS pour fonctionner avec un requete fleshlight emise par le navigateur bah ça bloque</p>
+      <p>Pour faire une requete signée sur l'API Binance, faut un header custom : "X-MBX-APIKEY"
+      et comme le serveur de l'api binance n'a pas configuré de CORS pour fonctionner avec un requete fleshlight emise par le navigateur bah ça bloque.</p>
       
-      <p>et ca me fait trop chier parce que oui c'est le seul truc qui peut faire douter d'un point de vue extérieur
-      mais tu viens de me donner une idée : je vais rajouter un input pour insérer son propre lien proxy cors</p>
+      <p>Et ca me fait trop chier parce que oui c'est le seul truc qui peut faire douter d'un point de vue extérieur
+      mais tu viens de me donner une idée : je vais rajouter un input pour insérer son propre lien proxy CORS.</p>
       
-      <p>il faut créer son propre proxy cors (très facile et rapide sur herokuapp) parce que les proxy cors qu'on trouve sur google, leur IP a été trop utilisée sur binance, du coup "HTTP 403 return code is used when the WAF Limit (Web Application Firewall) has been violated."
+      <p>Il faut créer son propre proxy CORS (très facile et rapide sur herokuapp) parce que les proxy CORS qu'on trouve sur google, leur IP a été trop utilisée sur binance, du coup "HTTP 403 return code is used when the WAF Limit (Web Application Firewall) has been violated."
         <br>&#148;</p>
     
     <h3>Conclusion</h3>
-    <p>Vous pouvez utiliser mon proxy cors (https://cryptochancla.herokuapp.com/) qui est un simple fork de https://github.com/Rob--W/cors-anywhere<br>Dans ce cas rien à faire. Laissez le champ proxy cors vide.</p>
-    <p>Ou alors, vous pouvez créer un proxy cors et saisir son url dans le champ proxy cors.</p>
+    <p>Vous pouvez utiliser mon proxy CORS (https://cryptochancla.herokuapp.com/) qui est un simple fork de https://github.com/Rob--W/cors-anywhere<br>Dans ce cas rien à faire. Laissez le champ proxy cors vide.</p>
+    <p>Ou alors, vous pouvez créer votre proxy CORS et saisir son url dans le champ proxy CORS.</p>
     
 
-    <h3>Comment créer son proxy cors en 2 minutes :</h3>
+    <h3>Comment créer son proxy CORS en 2 minutes :</h3>
     <ul>
-      <li>Inscrivez vous/Connectez vous sur herokuapp.com, choisissez NodeJS</li>
-      <li>Inscrivez vous/Connectez vous sur github.com, forkez le projet https://github.com/Rob--W/cors-anywhere</li>
-      <li>Synchronisez votre herokuapp avec le dépot github que vous venez de forker</li>
+      <li>Inscrivez-vous/Connectez-vous sur herokuapp.com, choisissez NodeJS</li>
+      <li>Inscrivez-vous/Connectez-vous sur github.com, forkez le projet https://github.com/Rob--W/cors-anywhere</li>
+      <li>Synchronisez votre herokuapp avec votre dépot github que vous venez de créer/forker</li>
       <li>Activez le déploiement automatique sur herokuapp</li>
     </ul>
 
