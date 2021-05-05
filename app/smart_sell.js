@@ -147,4 +147,49 @@ function cancel_smart_sell(){
   smart_sell_activated = false;
 }
 
+
+
+// ******* ICI ON VEND VRAIMENT *************** //
+//si smart sell completé
+
+var rep_recu_go_sell=1;
+setInterval(function(){ 
+
+
+  if(real_sell && go_sell){
+
+
+    if(rep_recu_go_sell==1){
+        var xmlhttp_go_sell = new XMLHttpRequest();
+
+        var query = "symbol="+smart_sell_paire+"&side=SELL&type=MARKET&quantity="+smart_sell_quantite+"&recvWindow=5000&timestamp="+serverTime;
+        var query_signed = CryptoJS.HmacSHA256(query, secret); //crypt query avec secret de la cle api 
+
+        var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";
+
+        xmlhttp_go_sell.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myArr = JSON.parse(this.responseText);
+                console.log(myArr);
+
+                rep_recu_go_sell=1;
+                go_sell = false;
+            }
+        };
+
+        xmlhttp_go_sell.open("POST", url, true);
+        xmlhttp_go_sell.setRequestHeader("X-MBX-APIKEY", cle); // cle api
+        xmlhttp_go_sell.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp_go_sell.send(query+"&signature="+query_signed);
+        
+        rep_recu_go_sell=0;
+      }
+
+
+  }  
+
+
+}, 100); //100ms de retard max entre le traitement et lenvoie de lordre à bibi
+
+
 // ------------! FIN SMART SELL !------------
