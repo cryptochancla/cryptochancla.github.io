@@ -7,18 +7,27 @@ var myModal = new bootstrap.Modal(document.getElementById('modalCleAPI'), {
   backdrop: 'static'
   });
 
+
+
 //si click sur bouton commencer, ferme modal et attribut valeur cle/secret api
 function saisie_cle_api() {
-  cle = document.getElementById("cle").innerHTML;
-  secret = document.getElementById("secret").innerHTML;
-  console.log("clé et secret API attribués");
+  cle = document.getElementById("cle").value;
+  secret = document.getElementById("secret").value;
   myModal.hide()
-
-  console.log("test encrypt pour la future requete signé si ordre - > HMAC SHA256 : "+CryptoJS.HmacSHA256("query", secret));
 }
+
+
 
 //quand page prete
 window.addEventListener('load', function () {
+
+    var e = document.getElementById('tradingview_b0bb0');
+    if(window.screen.height>=1440){
+        e.style.height = 650+"px";
+    }
+    else{
+        e.style.height = 450+"px";
+    }
 
   //rempli le select avec coins existant sur binance
   var xmlhttp_liste_pair = new XMLHttpRequest();
@@ -40,9 +49,9 @@ window.addEventListener('load', function () {
 });
 
 
-// SERVER TIME
-var serverTime;
-var tmp=1;
+
+// SERVER TIME actualisé toutes les secondes //
+var serverTime=0;
 
 var rep_recu_time=1;
 setInterval(function(){ 
@@ -57,47 +66,60 @@ setInterval(function(){
             var d = new Date(serverTime);
             document.getElementById("heure_binance").innerHTML = d.toTimeString();
             rep_recu_time=1;
-
-
-
-
-            if(tmp==1){
-            var query = "symbol=BNBUSDT&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=600.5&recvWindow=5000&timestamp="+serverTime;
-            var query_signed = CryptoJS.HmacSHA256(query, "0MkzEozy64jF0y9Zf4dnBsUbTIlgPjSwGMSNWOmQ78l9fbxzje6d7ivMYCUFkUML"); //crypt query avec secret de la cle api 
-            
-              var xmlhttp_test = new XMLHttpRequest();
-                  //var url = "https://cors-escape.herokuapp.com/https://api.binance.com/api/v3/order";
-                  var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";
-            
-            
-                  xmlhttp_test.onreadystatechange = function() {
-                      if (this.readyState == 4 && this.status == 200) {
-                          var myArr = JSON.parse(this.responseText);
-                          console.log(myArr);
-                      }
-                  };
-                  xmlhttp_test.open("POST", url, true);
-                  //xmlhttp_test.withCredentials = false; 
-                  //xmlhttp_test.setRequestHeader("Access-Control-Allow-Credentials", "true");
-                  //xmlhttp_test.setRequestHeader("Access-Control-Allow-Origin", "https://cryptochancla.github.io");
-                  xmlhttp_test.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3"); // cle api
-                  xmlhttp_test.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                  xmlhttp_test.send(query+"&signature="+query_signed);
-                  tmp=0;
-                }
-
-
-
-
-
-
-
-
         }
     };
     xmlhttp_server_time.open("GET", url, true);
     xmlhttp_server_time.send();
     rep_recu_time=0;
   }
+
+}, 1000);
+
+
+
+// Solde Fiat et Spot actualisé toutes les secondes //
+
+var rep_recu_balance=1;
+setInterval(function(){ 
+
+    if(serverTime>0 && cle!="" && secret!=""){
+
+        if(rep_recu_balance==1){
+            var xmlhttp_balance = new XMLHttpRequest();
+
+            var query = "timestamp="+serverTime;
+            var query_signed = CryptoJS.HmacSHA256(query, secret); //crypt query avec secret de la cle api 
+            
+            var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/account?"+query+"&signature="+query_signed;
+            xmlhttp_balance.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var myArr = JSON.parse(this.responseText).balances;
+                    var str_tmp="";
+                    for(i = 0; i < myArr.length; i++) {
+                        if(myArr[i].free>0){
+                            str_tmp+=myArr[i].asset;
+                            str_tmp+=" : ";
+                            str_tmp+=myArr[i].free;
+                            str_tmp+="; ";
+                        }
+                    }
+                    if(str_tmp !=""){
+                        document.getElementById("balance").innerHTML = str_tmp;
+                    }
+                    else{
+                        document.getElementById("balance").innerHTML = "Faut remplir son compte Spot mon ptit pote !";
+                    }
+
+                    rep_recu_balance=1;
+                }
+            };
+            xmlhttp_balance.open("GET", url, true);
+            xmlhttp_balance.setRequestHeader("X-MBX-APIKEY", cle); // cle api
+            xmlhttp_balance.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp_balance.send();
+            rep_recu_balance=0;
+        }
+
+    }
 
 }, 1000);

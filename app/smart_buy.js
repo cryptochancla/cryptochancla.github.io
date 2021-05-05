@@ -27,6 +27,8 @@ function smart_buy(real_buy_local){
   smart_buy_activated = true;
 
   //insert premieres infos dans tab
+  document.getElementById("smart_buy_annuler_button").innerHTML = '<button type="button" onclick="cancel_smart_buy()" class="btn btn-warning">Annuler</button>';
+
   document.getElementById("smart_buy_paire").innerHTML = smart_buy_paire;
   document.getElementById("smart_buy_prix_cible").innerHTML = smart_buy_prix_cible;
   document.getElementById("smart_buy_ecart").innerHTML = "+ "+smart_buy_ecart+" %";
@@ -83,6 +85,33 @@ setInterval(function(){
                   if(smart_buy_prix_actuel>=smart_buy_plus_bas*(1+(smart_buy_ecart/100))){
                       //montée de x % par rapport au dernier bas
                       //on achete.
+
+
+
+/*
+                      var query = "symbol=BNBUSDT&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=600.5&recvWindow=5000&timestamp="+serverTime;
+                      var query_signed = CryptoJS.HmacSHA256(query, "0MkzEozy64jF0y9Zf4dnBsUbTIlgPjSwGMSNWOmQ78l9fbxzje6d7ivMYCUFkUML"); //crypt query avec secret de la cle api 
+                  
+                      var xmlhttp_test = new XMLHttpRequest();
+                      var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";
+                  
+                  
+                      xmlhttp_test.onreadystatechange = function() {
+                          if (this.readyState == 4 && this.status == 200) {
+                              var myArr = JSON.parse(this.responseText);
+                              console.log(myArr);
+                          }
+                      };
+                      xmlhttp_test.open("POST", url, true);
+                      xmlhttp_test.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3"); // cle api
+                      xmlhttp_test.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                      xmlhttp_test.send(query+"&signature="+query_signed);
+*/
+
+
+
+
+
                       smart_buy_etat=smart_buy_prix_actuel;
                       document.getElementById("smart_buy_etat").innerHTML = "Acheté à "+smart_buy_etat;
 
@@ -133,7 +162,7 @@ setInterval(function(){
     real_buy = false;
   }
 
-}, 1000);//1000ms => 1sec ;)
+}, 1000);//1000ms => 1sec ;) 
 //FIN CYCLE HORLOGE
 
 function cancel_smart_buy(){

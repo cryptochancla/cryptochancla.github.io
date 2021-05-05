@@ -17,9 +17,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha256.js"></script>
   </head>
-  <body class="text-white bg-dark">
+  <body class="text-white bg-dark container-fluid">
 
-    <h3><i class="bi bi-calculator-fill"></i>CryptoChancla</h3><p>Pour fonctionner, l'onglet ne doit être ni fermé ni rafraîchi. <span id="heure_binance"></span> (Binance Server Time)</p>
+  
+    
+      
+    <div class="row">
+      <div class="col-sm">
+        <h3><i class="bi bi-calculator-fill"></i>CryptoChancla</h3>
+      </div>
+      <div class="col-sm text-center">
+        <p>Pour fonctionner, l'onglet ne doit être ni fermé ni rafraîchi.</p>
+      </div>
+      <div class="col-sm text-end">
+        <p><span id="heure_binance"></span> (Binance Server Time)</p>
+      </div>
+    </div>
+
+ 
+      
+
+    
 
 
 
@@ -80,121 +98,205 @@
     </div>
     <!-- TradingView Widget END -->
 
-  
-    <h2>Smart buy</h2>
+    <h2>Solde Fiat et Spot</h2>
+    <p id="balance"></p>
 
-    <table><tr>
-      <td>
+    <h2>Smart buy</h2><p>Saisir un nouveau annule et remplace celui en cours.</p>
+
+    <div class="row">
+      <div class="col-sm">
         <select class="form-select" id="smart_buy_select_paire">
         </select>
-      </td>
-      <td><input id="smart_buy_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234"></td>
-      <td><input id="smart_buy_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur en %, ex 15"></td>
-      <td><input id="smart_buy_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555"></td>
-      <td> <button type="button" onclick="smart_buy(false)" id="smart_buy_button_test" class="btn btn-secondary">Test</button></td>
-      <td><button type="button" onclick="smart_buy(true)" id="smart_buy_button" class="btn btn-success">Acheter pour de vrai</button></td>
-      <td>Solde dispo : </td>
-    </tr></table>
-  
-    <table class="table table-dark table-striped">
+      </div>
+      <div class="col-sm">
+        <input id="smart_buy_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234">
+      </div>
+      <div class="col-sm">
+        <input id="smart_buy_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur X en %, ex 15">
+      </div>
+      <div class="col-sm">
+        <input id="smart_buy_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555">
+      </div>
+      <div class="col-sm">
+        <button type="button" onclick="smart_buy(false)" id="smart_buy_button_test" class="btn btn-secondary">Test</button>
+      </div>
+      <div class="col-sm">
+        <button type="button" onclick="smart_buy(true)" id="smart_buy_button" class="btn btn-success">Acheter pour de vrai</button>
+      </div>
+    </div>
 
+
+
+    <div class="row">
+      <div class="col-sm">
+        
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Paire</th>
+              <th>Prix CIBLE</th>
+              <th>Ecart déclencheur X</th>
+              <th>Quantité</th>
+              <th>Etat</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th id="smart_buy_paire"></th>
+              <th id="smart_buy_prix_cible"></th>
+              <td id="smart_buy_ecart"></td>
+              <th id="smart_buy_quantite"></th>
+              <td  id="smart_buy_etat"></td>
+              <td  id="smart_buy_annuler_button"></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="col-sm">
+        
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Prix ACTUEL</th>
+              <th>PLUS_BAS</th>
+              <th>Différence prix ACTUEL/PLUS_BAS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+
+              <td id="smart_buy_prix_actuel"></td>
+              <td  id="smart_buy_plus_bas"></td>
+              <td id="smart_buy_diff"></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="col-sm">
+        
+    <table class="table table-dark table-striped">
       <thead>
         <tr>
-          <th>Paire</th>
-          <th>Prix CIBLE</th>
-          <th>Ecart déclencheur</th>
-          <th>Quantité</th>
-          <th>Etat</th>
-          <th></th>
-          <th>Prix ACTUEL</th>
-          <th>PLUS_BAS</th>
-          <th>Diff prix ACTUEL/PLUS_BAS</th>
           <th>Date début</th>
           <th>Date CIBLE touchée</th>
           <th>Date vente</th>
         </tr>
       </thead>
       <tbody>
-    
-    
-    
         <tr>
-          <th id="smart_buy_paire"></th>
-          <th id="smart_buy_prix_cible"></th>
-          <td id="smart_buy_ecart"></td>
-          <th id="smart_buy_quantite"></th>
-          <td  id="smart_buy_etat"></td>
-          <td  id="smart_buy_annuler_button"><button type="button" onclick="cancel_smart_buy()" class="btn btn-warning">Annuler</button></td>
-          <td id="smart_buy_prix_actuel"></td>
-          <td  id="smart_buy_plus_bas"></td>
-          <td id="smart_buy_diff"></td>
           <td id="smart_buy_date_debut"></td>
           <td id="smart_buy_date_cible"></td>
           <td id="smart_buy_date_vente"></td>
         </tr>
-    
-    
-
-    
-    
       </tbody>
     </table>
 
-    <h2>Smart sell</h2>
+      </div>
+    </div>
 
-    <table><tr>
-      <td>
+
+    <h2>Smart sell</h2><p>Saisir un nouveau annule et remplace celui en cours.</p>
+
+
+    <div class="row">
+      <div class="col-sm">
         <select class="form-select" id="smart_sell_select_paire">
         </select>
-      </td>
-      <td><input id="smart_sell_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234"></td>
-      <td><input id="smart_sell_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur en %, ex 1.5"></td>
-      <td><input id="smart_sell_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555"></td>
-      <td> <button type="button" onclick="smart_sell(false)" id="smart_sell_button_test" class="btn btn-secondary">Test</button></td>
-      <td><button type="button" onclick="smart_sell(true)" id="smart_sell_button" class="btn btn-danger">Vendre pour de vrai</button></td>
-      <td>Solde dispo : </td>
-    </tr></table>
+      </div>
+      <div class="col-sm">
+        <input id="smart_sell_input_prix_cible" type="text" class="form-control col-2" placeholder="Prix CIBLE, ex 61234.1234">
+      </div>
+      <div class="col-sm">
+        <input id="smart_sell_input_ecart" type="text" class="form-control col-2" placeholder="Ecart déclencheur X en %, ex 1.5">
+      </div>
+      <div class="col-sm">
+        <input id="smart_sell_input_quantite" type="text" class="form-control col-2" placeholder="Quantité, ex 0.5555">
+      </div>
+      <div class="col-sm">
+        <button type="button" onclick="smart_sell(false)" id="smart_sell_button_test" class="btn btn-secondary">Test</button>
+      </div>
+      <div class="col-sm">
+        <button type="button" onclick="smart_sell(true)" id="smart_sell_button" class="btn btn-danger">Vendre pour de vrai</button>
+      </div>
+    </div>
 
+
+
+    <div class="row">
+      <div class="col-sm">
+        
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Paire</th>
+              <th>Prix CIBLE</th>
+              <th>Ecart déclencheur X</th>
+              <th>Quantité</th>
+              <th>Etat</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th id="smart_sell_paire"></th>
+              <th id="smart_sell_prix_cible"></th>
+              <td id="smart_sell_ecart"></td>
+              <th id="smart_sell_quantite"></th>
+              <td  id="smart_sell_etat"></td>
+              <td  id="smart_sell_annuler_button"></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="col-sm">
+        
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Prix ACTUEL</th>
+              <th>PLUS_HAUT</th>
+              <th>Différence prix ACTUEL/PLUS_HAUT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="smart_sell_prix_actuel"></td>
+              <td  id="smart_sell_plus_haut"></td>
+              <td id="smart_sell_diff"></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="col-sm">
+        
     <table class="table table-dark table-striped">
       <thead>
         <tr>
-          <th>Paire</th>
-          <th>Prix CIBLE</th>
-          <th>Ecart déclencheur</th>
-          <th>Quantité</th>
-          <th>Etat</th>
-          <th></th>
-          <th>Prix ACTUEL</th>
-          <th>PLUS_HAUT</th>
-          <th>Diff prix ACTUEL/PLUS_HAUT</th>
           <th>Date début</th>
           <th>Date CIBLE touchée</th>
           <th>Date vente</th>
         </tr>
       </thead>
       <tbody>
-    
-    
-    
         <tr>
-          <th id="smart_sell_paire"></th>
-          <th id="smart_sell_prix_cible"></th>
-          <td id="smart_sell_ecart"></td>
-          <th id="smart_sell_quantite"></th>
-          <td  id="smart_sell_etat"></td>
-          <td  id="smart_sell_annuler_button"><button type="button" onclick="cancel_smart_sell()" class="btn btn-warning">Annuler</button></td>
-          <td id="smart_sell_prix_actuel"></td>
-          <td  id="smart_sell_plus_haut"></td>
-          <td id="smart_sell_diff"></td>
           <td id="smart_sell_date_debut"></td>
           <td id="smart_sell_date_cible"></td>
           <td id="smart_sell_date_vente"></td>
         </tr>
-    
-    
-    
       </tbody>
     </table>
+
+      </div>
+    </div>
+
+
+
+
 
 
   </body>
@@ -208,79 +310,15 @@
 
   <script>
 
-
-
   //TO DO
-  //add quantite dispo sur wallet spot binance de la paire select
   //xmlhttp market buy/sell if real_buy / real_sell
-  //creer array pour plusieurs smart sell/buy
-  //ameliorer interface  //responsiv design
-  //mettre bouton cacher tradingview
+  //afficher retour erreur binance si ordre passé
+
+  //creer array pour plusieurs smart sell/buy ? => suffit douvrir un autre onglet
+
+  //ameliorer interface / responsiv design
+  //mettre bouton cacher tradingview 
   //bouton cible actuel profiter pump/dump ! - changer fonctionnalites.html alors
-  //mettre code smart sell/buy dans js ext avec separation fonction get price + order buy / sell
-
-
-
-  /*
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", 'https://api.binance.com/api/v3/order', true);
-
-  //Envoie les informations du header adaptées avec la requête
-  //xhr.setRequestHeader("User-Agent", "Mozilla/4.0 (compatible; PHP Binance API)");//X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A
-  //xhr.setRequestHeader("X-MBX-APIKEY", "Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3");
-  //xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-  xhr.onreadystatechange = function() { //Appelle une fonction au changement d'état.
-      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-  // Requête finie, traitement ici.
-        console.log(JSON.parse(this.responseText));
-      }
-  }
-  xhr.send("symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365&signature=c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a");
-  
-*/
-
-
-
-
-  
-
-
-
-
-
-  /*
-  REQUETE AVANT SIGNED :
-  order , opt = Array ( [symbol] => BTCUSDT [side] => BUY [type] => LIMIT [quantity] => 1.2 [recvWindow] => 60000 [price] => 50000.2 [timeInForce] => GTC ) , POST
-  dans fonction SIGNED
-  query :
-  symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365
-  on crypte la query avec le secret, ca donne : c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a
-  nouveau opt =>
-  Array ( [http] => Array ( [method] => POST [ignore_errors] => 1 [header] => User-Agent: Mozilla/4.0 (compatible; PHP Binance API) X-MBX-APIKEY: Hu3CLKGBt23TibLaoRMIiKmsql0hGMt4agzxaxww0lrKdOX9b0mOSX7GSPW4qYw3 Content-type: application/x-www-form-urlencoded ) )
-  parameters encoded as POST data (in variable context) =>
-  endpoint = https://api.binance.com/api/v3/order
-  postdate = symbol=BTCUSDT&side=BUY&type=LIMIT&quantity=1.2&recvWindow=60000&price=50000.2&timeInForce=GTC×tamp=1619986146365&signature=c02d5f3a253bb77b6803a15a580b60e768c7cdac6b9e506c6937c68c8a3c429a
-  postdate qui va dans var opt['http']['content']
-  on arrive a la finArray ( [code] => -2010 [msg] => Account has insufficient balance for requested action. )
-  */
-
-  /*
-  Access to XMLHttpRequest at 'https://api.binance.com/api/v3/order' from origin 'null' has been blocked by CORS policy: Request header field x-mbx-apikey is not allowed by Access-Control-Allow-Headers in preflight response.
-  index.html:581 POST https://api.binance.com/api/v3/order? net::ERR_FAILED
-
-
-
-  (HMAC SHA256)
-      $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order' -d 'symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71'
-
-
-      (HMAC SHA256)
-    $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order?symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71'
-  
-    $ curl -H "X-MBX-APIKEY: vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A" -X POST 'https://api.binance.com/api/v3/order?symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC' -d 'quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=0fd168b8ddb4876a0358a8d14d0c9f3da0e9b20c5d52b2a00fcf7d1c602f9a77'
-
-  */
 
   </script>
 

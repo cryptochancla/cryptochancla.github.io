@@ -27,6 +27,8 @@ function smart_sell(real_sell_local){
   smart_sell_activated = true;
 
   //insert premieres infos dans tab
+  document.getElementById("smart_sell_annuler_button").innerHTML = '<button type="button" onclick="cancel_smart_sell()" class="btn btn-warning">Annuler</button>';
+
   document.getElementById("smart_sell_paire").innerHTML = smart_sell_paire;
   document.getElementById("smart_sell_prix_cible").innerHTML = smart_sell_prix_cible;
   document.getElementById("smart_sell_ecart").innerHTML = "- "+smart_sell_ecart+" %";
