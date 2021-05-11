@@ -1,6 +1,5 @@
 // ------------! SMART BUY !------------
 var real_buy = false;
-var go_buy = false;
 
 
 
@@ -88,7 +87,11 @@ setInterval(function(){
                   if(smart_buy_prix_actuel>=smart_buy_plus_bas*(1+(smart_buy_ecart/100))){
                       //montée de x % par rapport au dernier bas
                       //on achete.
-                      go_buy = true;
+
+        
+                      if(real_buy){marketbuyorderbibi();}
+
+                      document.getElementById("smart_buy_annuler_button").innerHTML = '';
 
                       smart_buy_etat=smart_buy_prix_actuel;
                       document.getElementById("smart_buy_etat").innerHTML = "Acheté à "+smart_buy_etat;
@@ -125,6 +128,7 @@ setInterval(function(){
     document.getElementById("smart_buy_date_debut").innerHTML = "";
     document.getElementById("smart_buy_date_cible").innerHTML = "";
     document.getElementById("smart_buy_date_vente").innerHTML = "";
+    document.getElementById("smart_buy_annuler_button").innerHTML = '';
     smart_buy_paire = null;
     smart_buy_prix_cible = null;
     smart_buy_ecart = null;
@@ -150,48 +154,32 @@ function cancel_smart_buy(){
 
 
 
-// ******* ICI ON ACHETE VRAIMENT *************** //
-//si smart buy completé
 
-var rep_recu_go_buy=1;
-setInterval(function(){ 
-
-
-  if(real_buy && go_buy){
-
-
-    if(rep_recu_go_buy==1){
-        var xmlhttp_go_buy = new XMLHttpRequest();
-
-        var query = "symbol="+smart_buy_paire+"&side=BUY&type=MARKET&quantity="+smart_buy_quantite+"&recvWindow=5000&timestamp="+serverTime;
-        var query_signed = CryptoJS.HmacSHA256(query, secret); //crypt query avec secret de la cle api 
-
-        var url = proxy_cors+"https://api.binance.com/api/v3/order";
-
-        xmlhttp_go_buy.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myArr = JSON.parse(this.responseText);
-                console.log(myArr);
-
-                rep_recu_go_buy=1;
-                go_buy = false;
-                maj_balance = true;
-            }
-        };
-
-        xmlhttp_go_buy.open("POST", url, true);
-        xmlhttp_go_buy.setRequestHeader("X-MBX-APIKEY", cle); // cle api
-        xmlhttp_go_buy.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp_go_buy.send(query+"&signature="+query_signed);
-        
-        rep_recu_go_buy=0;
-      }
-
-
-  }  
-
-
-}, 100); //100ms de retard max entre le traitement et lenvoie de lordre à bibi
 
 
 // ------------! FIN SMART BUY !------------
+
+function marketbuyorderbibi(){
+
+  var xmlhttp_go_buy = new XMLHttpRequest();
+
+  var query = "symbol="+smart_buy_paire+"&side=BUY&type=MARKET&quantity="+smart_buy_quantite+"&recvWindow=5000&timestamp="+serverTime;
+  var query_signed = CryptoJS.HmacSHA256(query, secret); //crypt query avec secret de la cle api 
+
+  var url = proxy_cors+"https://api.binance.com/api/v3/order";
+
+  xmlhttp_go_buy.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+          var myArr = JSON.parse(this.responseText);
+          console.log(myArr);
+
+          maj_balance = true;
+      }
+  };
+
+  xmlhttp_go_buy.open("POST", url, true);
+  xmlhttp_go_buy.setRequestHeader("X-MBX-APIKEY", cle); // cle api
+  xmlhttp_go_buy.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp_go_buy.send(query+"&signature="+query_signed);
+
+}
