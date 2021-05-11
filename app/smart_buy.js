@@ -20,6 +20,8 @@ var smart_buy_activated = false;
 
 function smart_buy(real_buy_local){
   real_buy = real_buy_local;
+  console.log(real_buy);
+  if(real_buy){console.log("rteal buty true");}
   //recupere les infos
   smart_buy_paire = document.getElementById('smart_buy_select_paire').options[document.getElementById('smart_buy_select_paire').selectedIndex].value;
   smart_buy_prix_cible = document.getElementById("smart_buy_input_prix_cible").value;
@@ -88,7 +90,7 @@ setInterval(function(){
                       //montée de x % par rapport au dernier bas
                       //on achete.
 
-        
+                      if(real_buy){console.log("before requete market buy")}
                       if(real_buy){marketbuyorderbibi();}
 
                       document.getElementById("smart_buy_annuler_button").innerHTML = '';
@@ -161,6 +163,8 @@ function cancel_smart_buy(){
 
 function marketbuyorderbibi(){
 
+console.log("en direct de la fonction");
+
   var xmlhttp_go_buy = new XMLHttpRequest();
 
   var query = "symbol="+smart_buy_paire+"&side=BUY&type=MARKET&quantity="+smart_buy_quantite+"&recvWindow=5000&timestamp="+serverTime;
@@ -172,7 +176,7 @@ function marketbuyorderbibi(){
       if (this.readyState == 4 && this.status == 200) {
           var myArr = JSON.parse(this.responseText);
           console.log(myArr);
-
+          console.log("ca va gange");
           maj_balance = true;
       }
   };
