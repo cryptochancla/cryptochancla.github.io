@@ -146,7 +146,7 @@ setInterval(function(){
     real_buy = false;
   }
 
-}, 1000);//1000ms => 1sec ;) 
+}, 500);
 //FIN CYCLE HORLOGE
 
 function cancel_smart_buy(){
@@ -167,6 +167,13 @@ console.log("en direct de la fonction");
 
   var xmlhttp_go_buy = new XMLHttpRequest();
 
+  //api binance quantity is the quantity of base asset u want
+  //donc il faut diviser le nombre d'usdt quon veut depenser PAR le prix actuel du coin desiré
+  //ah et faut aussi arrondir pck on peut pas echanger plus d'une certaine decimal dun coin selon la regle du coin exchange filter
+  //donc on va arrondir a la decimal superieure
+  //attention a voir si ca suffit pck si le prix varie trop en moins dune seconde peut y avoir trop de quantity pour le nombre d'usdt detenu et donc le market order se fera pas
+  //smart_buy_quantite=(smart_buy_quantite/smart_buy_prix_actuel).toPrecision(3);
+  //a finir demain
   var query = "symbol="+smart_buy_paire+"&side=BUY&type=MARKET&quantity="+smart_buy_quantite+"&recvWindow=5000&timestamp="+serverTime;
   var query_signed = CryptoJS.HmacSHA256(query, secret); //crypt query avec secret de la cle api 
 

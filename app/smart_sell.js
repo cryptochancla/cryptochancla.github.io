@@ -143,7 +143,7 @@ setInterval(function(){
     real_sell = false;
   }
 
-}, 1000);//1000ms => 1sec ;)
+}, 500);
 //FIN CYCLE HORLOGE
 
 function cancel_smart_sell(){

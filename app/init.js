@@ -39,13 +39,13 @@ window.addEventListener('load', function () {
 
   //rempli le select avec coins existant sur binance
   var xmlhttp_liste_pair = new XMLHttpRequest();
-    var url = "https://api.binance.com/api/v3/ticker/price";
+    var url = "https://api.binance.com/api/v3/exchangeInfo";
     xmlhttp_liste_pair.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
+            var myArr = (JSON.parse(this.responseText)).symbols;
             for(i = 0; i < myArr.length; i++) {
-              document.getElementById("smart_buy_select_paire").options[document.getElementById("smart_buy_select_paire").length] = new Option(myArr[i].symbol, myArr[i].symbol);
-              document.getElementById("smart_sell_select_paire").options[document.getElementById("smart_sell_select_paire").length] = new Option(myArr[i].symbol, myArr[i].symbol);
+              document.getElementById("smart_buy_select_paire").options[document.getElementById("smart_buy_select_paire").length] = new Option(myArr[i].symbol+" "+myArr[i].filters[2].stepSize, myArr[i].symbol);
+              document.getElementById("smart_sell_select_paire").options[document.getElementById("smart_sell_select_paire").length] = new Option(myArr[i].symbol+" "+myArr[i].filters[2].stepSize, myArr[i].symbol);
             }
         }
     };

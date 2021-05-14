@@ -302,9 +302,12 @@
       </div>
     </div>
 
-
-
-
+<p>
+    In order to pass the lot size, the following must be true for quantity/icebergQty:<br>
+    quantity >= minQty<br>
+    quantity <= maxQty<br>
+    (quantity-minQty) % stepSize == 0
+</p>
 
 
   </body>
@@ -318,7 +321,7 @@
 
   <script>
 
-  //TO DO
+  //TO DO step size rule for the symbol.
 
   //changer paire sur tradingview apres change select
   //preciser si realbuy/sell or not
