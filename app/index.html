@@ -341,10 +341,20 @@
 
   //TO DO step size rule for the symbol.
 
+
+  //api binance quantity is the quantity of base asset u want
+  //donc il faut diviser le nombre d'usdt quon veut depenser PAR le prix actuel du coin desiré
+  //ah et faut aussi arrondir pck on peut pas echanger plus d'une certaine decimal dun coin selon la regle du coin exchange filter
+  //donc on va arrondir a la decimal superieure
+  //attention a voir si ca suffit pck si le prix varie trop en moins dune seconde peut y avoir trop de quantity pour le nombre d'usdt detenu et donc le market order se fera pas
+  //smart_buy_quantite=(smart_buy_quantite/smart_buy_prix_actuel).toPrecision(3);
+  //a finir demain
+
+
   //changer paire sur tradingview apres change select
   //preciser si realbuy/sell or not
 
-  //afficher retour binance quand ordre passé ? => console.log + console reseau si error
+
   //creer array pour plusieurs smart sell/buy ? => suffit douvrir d'autres onglets
 
   //ameliorer interface
