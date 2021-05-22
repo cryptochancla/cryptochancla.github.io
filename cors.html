@@ -55,7 +55,7 @@
       &lt;&lt;<br>var url = "https://cryptochancla.herokuapp.com/https://api.binance.com/api/v3/order";<br>&gt;&gt;
       <br>&#148;</code>
 </p>
-    <p>&#147;<br>
+    <p>
       En fait cryptochancla.herokuapp.com c'est juste un proxy CORS https://github.com/cryptochancla/cors-anywhere</p>
       
       <p>Pour faire une requete signée sur l'API Binance, faut un header custom : "X-MBX-APIKEY"
@@ -65,7 +65,7 @@
       Pour cette raison j'ai donc ajouté un input pour insérer son propre lien proxy CORS si vous ne voulez pas utiliser celui de cryptochancla.</p>
       
       <p>Il faut créer son propre proxy CORS (très facile et rapide sur herokuapp) parce que les proxy CORS qu'on trouve sur google, leur IP a été trop utilisée sur binance, du coup "HTTP 403 return code is used when the WAF Limit (Web Application Firewall) has been violated."
-        <br>&#148;</p>
+        </p>
     
     <h3>Conclusion</h3>
     <p>Vous pouvez utiliser mon proxy CORS (https://cryptochancla.herokuapp.com/) qui est un simple fork de https://github.com/Rob--W/cors-anywhere<br>Dans ce cas rien à faire. Laissez le champ proxy CORS vide.</p>
