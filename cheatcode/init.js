@@ -6,8 +6,8 @@ var paire="BTCUSDT";
 var seconds_chart=document.getElementById('seconds_chart');
 
 var chart = LightweightCharts.createChart(seconds_chart, {
-    width: 1274,
-    height: 644,
+    width: 848,
+    height: 646,
     layout: {
         backgroundColor: '#151924',
         textColor: '#abaeb8'
@@ -22,11 +22,16 @@ var chart = LightweightCharts.createChart(seconds_chart, {
             return String(new Date(time * 1000).toISOString().substr(11, 8));
         },
     },
+    localization: {
+        timeFormatter: businessDayOrTimestamp => {
+            return String(new Date(businessDayOrTimestamp * 1000).toISOString().substr(11, 8));
+        },
+    },
 });
 
 var candleSeries = chart.addCandlestickSeries();
 
-var currentTime = Math.floor(Date.now() / 1000);
+var currentTime = (Math.floor(Date.now() / 1000))+1;
 var ticksInCurrentBar = 0;
 var currentBar = {
     open: null,
@@ -85,7 +90,7 @@ setInterval(function(){
         mergeTickToBar(prix);
         if (++ticksInCurrentBar === 5) {
             // move to next bar
-            currentTime = Math.floor(Date.now() / 1000);
+            currentTime = (Math.floor(Date.now() / 1000))+1;
             currentBar = {
                 open: null,
                 high: null,
