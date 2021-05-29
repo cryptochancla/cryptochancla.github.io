@@ -66,7 +66,7 @@ setInterval(function(){
   if(rep_recu_prix){
 
     var xmlhttp_prix = new XMLHttpRequest();
-    var url = "https://api.binance.com/api/v3/ticker/price?symbol="+paire;
+    var url = "https://fapi.binance.com/fapi/v1/ticker/price?symbol="+paire;
 
 
     xmlhttp_prix.onreadystatechange = function() {
