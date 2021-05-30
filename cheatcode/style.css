@@ -7,7 +7,11 @@ body{
 }
 
 
-table,td,tr,iframe,div,img{
+table,td,tr,iframe,div,img,a{
   margin:0;
   padding:0;
+}
+
+table,td,tr{
+
 }
