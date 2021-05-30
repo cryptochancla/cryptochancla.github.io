@@ -6,7 +6,7 @@ var paire="BTCUSDT";
 var seconds_chart=document.getElementById('seconds_chart');
 
 var chart = LightweightCharts.createChart(seconds_chart, {
-    width: 848,
+    width: 618,
     height: 646,
     layout: {
         backgroundColor: '#151924',
@@ -106,12 +106,6 @@ setInterval(function(){
 
 }, 200);
 //FIN CYCLE HORLOGE
-
-
-
-
-
-
 
 
 
