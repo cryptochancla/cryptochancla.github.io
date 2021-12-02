@@ -5,6 +5,7 @@
         body{
             background-color: rgb(26, 26, 26);
             text-align:center;
+            color:white;
             margin:0;
             padding:0;
         }
@@ -18,6 +19,11 @@
         Désolé, votre navigateur ne prend pas en charge &lt;canvas&gt;.
       </canvas>
 
+      <p id="p_coord"></p>
+      <p id="p_intervalle"></p>
+      <p>Fois le zoom :</p>
+      <p id="p_intervalle_zoom"></p>
+
 </body>
 
 
@@ -27,9 +33,7 @@ var ctx = canvas.getContext('2d');
 
 
 largeur = window.innerWidth;
-hauteur = window.innerWidth*9/16;
-//largeur = 800;
-//hauteur = 400;
+hauteur = window.innerWidth*1/2;
 
 ctx.canvas.width = largeur;
 ctx.canvas.height = hauteur;
@@ -40,15 +44,7 @@ x_max = 2;
 y_min = -1;
 y_max = 1;
 
-function render(zoom,x_souris,y_souris){
-    ctx.clearRect(0, 0, largeur, hauteur);
-
-
-
-
-
-
-
+function convertCoordToInterval(x_souris,y_souris){
     //calcul du centre
     centre_x = largeur/2;
     centre_y = hauteur/2;
@@ -66,17 +62,34 @@ function render(zoom,x_souris,y_souris){
     x_max = x_max +diff_relative_x; 
     y_min = y_min +diff_relative_y; 
     y_max = y_max +diff_relative_y; 
+}
+
+function zoomInterval(zoom){
+    x_min_tmp = x_min*zoom;
+    x_max_tmp = x_max*zoom;
+    y_min_tmp = y_min*zoom;
+    y_max_tmp = y_max*zoom;
+    
+    ecart_x = (x_max_tmp-x_min_tmp)/2;
+    ecart_y = (y_max_tmp-y_min_tmp)/2;
+
+    x_min = x_min + ecart_x; 
+    x_max = x_max - ecart_x; 
+    y_min = y_min + ecart_y; 
+    y_max = y_max - ecart_y; 
+    console.log("xmin : "+x_min);
+    console.log("xmax : "+x_max);
+    console.log("ymin : "+y_min);
+    console.log("ymax : "+y_max);
+}
+
+function render(zoom,x_souris,y_souris){
+    ctx.clearRect(0, 0, largeur, hauteur);
 
 
-    //le zoom 
-    x_min*=zoom;
-    x_max*=zoom;
-    y_min*=zoom;
-    y_max*=zoom;
-    console.log("x_min : "+x_min);
-    console.log("x_max : "+x_max);
-    console.log("y_min : "+y_min);
-    console.log("y_max : "+y_max);
+    convertCoordToInterval(x_souris,y_souris)
+
+    if(zoom!=1)zoomInterval(zoom);
 
     x_incr_z = (x_max-x_min)/largeur;
     y_incr_z = (y_max-y_min)/hauteur;
@@ -102,7 +115,7 @@ function render(zoom,x_souris,y_souris){
             anp1 = x;
             bnp1 = y;
             
-            while(n<200 && !((anp1*anp1+bnp1*bnp1) > 4) ){
+            while(n<50 && !((anp1*anp1+bnp1*bnp1) > 4) ){
 
                 an = anp1;
                 bn = bnp1;
@@ -116,7 +129,7 @@ function render(zoom,x_souris,y_souris){
 
             m = anp1*anp1+bnp1*bnp1;
         
-            if(n!=200){
+            if(n!=50){
                 //ctx.fillStyle = 'rgb('+m*64+','+m*32+','+m*16+')';
 
                 ctx.fillStyle = 'hsl('+ 360*m +',200%,50%)';
@@ -135,25 +148,60 @@ function render(zoom,x_souris,y_souris){
     }
 
 
-    //encadre debug
-   // ctx.strokeStyle = "black";
-    //ctx.strokeRect(x_souris-largeur*0.9/2, y_souris-hauteur*0.9/2, largeur*0.9, hauteur*0.9);
-
-
+    /*
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 5;
+    ctx.strokeRect(0, 0, largeur/2, hauteur/2);
+    ctx.strokeRect(largeur/2, hauteur/2, largeur/2, hauteur/2);
+    ctx.arc(largeur/2, hauteur/2, 10, 0, 2 * Math.PI, false);
+    ctx.stroke();
+    */
 
 }
 
-zoomConst = 1;
+zoomConst=0.9;
 
-render(zoomConst,largeur/2,hauteur/2);
+render(1,largeur/2,hauteur/2);
 
 canvas.addEventListener("click",function(e){
     x_tmp = e.clientX-canvas.getBoundingClientRect().left;
     y_tmp = e.clientY-canvas.getBoundingClientRect().top;
 
-    zoomConst=0.7;
-
     render(zoomConst,x_tmp,y_tmp);
+});
+
+canvas.addEventListener('mousemove', e => {
+    x_tmp = e.clientX-canvas.getBoundingClientRect().left;
+    y_tmp = e.clientY-canvas.getBoundingClientRect().top;
+
+    p_coord = document.querySelector('#p_coord');
+    p_coord.innerHTML = "x_souris : "+x_tmp+" | y_souris : "+y_tmp;
+
+    x_souris = x_tmp;
+    y_souris = y_tmp;
+    //calcul du centre
+    centre_x = largeur/2;
+    centre_y = hauteur/2;
+    //quelle diff entre nouveau point et le centre ?
+    diff_x = x_souris - centre_x;
+    diff_y = y_souris - centre_y;
+    //calcul du centre relatif
+    centre_x_relatif = (x_max-x_min)/2;
+    centre_y_relatif = (y_max-y_min)/2;
+    //calcul diff relative ( largeur/2 <=> (x_max-x_min)/2 )
+    diff_relative_x = diff_x*centre_x_relatif/centre_x;
+    diff_relative_y = diff_y*centre_y_relatif/centre_y;
+    //appliquer la diff relative
+    x_min_tmp = x_min +diff_relative_x; 
+    x_max_tmp = x_max +diff_relative_x; 
+    y_min_tmp = y_min +diff_relative_y; 
+    y_max_tmp = y_max +diff_relative_y; 
+
+    p_intervalle = document.querySelector('#p_intervalle');
+    p_intervalle.innerHTML = "x_min : "+x_min_tmp+" | x_max : "+x_max_tmp+" || y_min : "+y_min_tmp+" | y_max : "+y_max_tmp;
+
+    p_intervalle_zoom = document.querySelector('#p_intervalle_zoom');
+    p_intervalle_zoom.innerHTML = "x_min : "+x_min_tmp*zoomConst+" | x_max : "+x_max_tmp*zoomConst+" || y_min : "+y_min_tmp*zoomConst+" | y_max : "+y_max_tmp*zoomConst;
 });
 
 </script>
