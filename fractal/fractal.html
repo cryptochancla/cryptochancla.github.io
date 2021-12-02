@@ -19,10 +19,12 @@
         Désolé, votre navigateur ne prend pas en charge &lt;canvas&gt;.
       </canvas>
 
+    <!--
       <p id="p_coord"></p>
       <p id="p_intervalle"></p>
       <p>Fois le zoom :</p>
       <p id="p_intervalle_zoom"></p>
+    -->
 
 </body>
 
@@ -77,10 +79,6 @@ function zoomInterval(zoom){
     x_max = x_max - ecart_x; 
     y_min = y_min + ecart_y; 
     y_max = y_max - ecart_y; 
-    console.log("xmin : "+x_min);
-    console.log("xmax : "+x_max);
-    console.log("ymin : "+y_min);
-    console.log("ymax : "+y_max);
 }
 
 function render(zoom,x_souris,y_souris){
@@ -163,14 +161,15 @@ zoomConst=0.9;
 
 render(1,largeur/2,hauteur/2);
 
-canvas.addEventListener("click",function(e){
+canvas.addEventListener("wheel",function(e){
     x_tmp = e.clientX-canvas.getBoundingClientRect().left;
     y_tmp = e.clientY-canvas.getBoundingClientRect().top;
 
     render(zoomConst,x_tmp,y_tmp);
 });
 
-canvas.addEventListener('mousemove', e => {
+/*
+canvas.addEventListener('wheel', e => {
     x_tmp = e.clientX-canvas.getBoundingClientRect().left;
     y_tmp = e.clientY-canvas.getBoundingClientRect().top;
 
@@ -203,6 +202,7 @@ canvas.addEventListener('mousemove', e => {
     p_intervalle_zoom = document.querySelector('#p_intervalle_zoom');
     p_intervalle_zoom.innerHTML = "x_min : "+x_min_tmp*zoomConst+" | x_max : "+x_max_tmp*zoomConst+" || y_min : "+y_min_tmp*zoomConst+" | y_max : "+y_max_tmp*zoomConst;
 });
+*/
 
 </script>
 
