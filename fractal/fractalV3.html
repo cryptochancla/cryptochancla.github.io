@@ -2,26 +2,12 @@
 <head>
     <title>Indra's Net</title>
     <style>
-        html{
-            overflow: hidden;
-        }
         body{
-            background-color:black;
+            background-color: rgb(0, 0, 0);
             text-align:center;
             color:white;
             margin:0;
             padding:0;
-        }
-        @keyframes zoom {
-            0% {
-                transform: scale(1, 1);
-            }
-            100% {
-                transform: scale(2, 2);
-            }
-        }
-        .zoom{
-            animation: zoom 1s ease 1;
         }
     </style>
 </head>
@@ -40,88 +26,21 @@
       <p id="p_intervalle_zoom"></p>
     
 
-    <p id="p_m"></p>
+    <p id="p_m"></p>-->
 
-
--->
-
-<p id="bite"></p>
+    <p id="bite"></p>
 
 </body>
 
 
 <script>
-
-
-
-      WebAssembly.instantiateStreaming(
-        fetch("~/fractal.wasm")
-      )
-        .then(obj => obj.instance.exports._Z11calc_mandelffffiiPi)
-        .then(tab => {
-            console.log(tab);
-        });
-
-
-
-
-/**
- * Converts an HSL color value to RGB. Conversion formula
- * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
- * Assumes h, s, and l are contained in the set [0, 1] and
- * returns r, g, and b in the set [0, 255].
- *
- * @param   {number}  h       The hue
- * @param   {number}  s       The saturation
- * @param   {number}  l       The lightness
- * @return  {Array}           The RGB representation
- */
- function hslToRgb(h, s, l){
-    var r, g, b;
-
-    if(s == 0){
-        r = g = b = l; // achromatic
-    }else{
-        var hue2rgb = function hue2rgb(p, q, t){
-            if(t < 0) t += 1;
-            if(t > 1) t -= 1;
-            if(t < 1/6) return p + (q - p) * 6 * t;
-            if(t < 1/2) return q;
-            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        }
-
-        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        var p = 2 * l - q;
-        r = hue2rgb(p, q, h + 1/3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1/3);
-    }
-
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-}
-
-
-
-
-
-
-
-
-
-
-
-
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
-
 //largeur = 400;
 //hauteur = 200;
-largeur = document.body.clientWidth; //.innerWidth;
-hauteur = document.body.clientHeight*1/2; //.innerWidth*1/1;
-
-const imageData = ctx.createImageData(largeur, hauteur);
+largeur = window.innerWidth;
+hauteur = window.innerWidth*1/2;
 
 ctx.canvas.width = largeur;
 ctx.canvas.height = hauteur;
@@ -215,7 +134,7 @@ function render(){
             anp1 = x;
             bnp1 = y;
             
-            while(n<1580 && !((m=anp1*anp1+bnp1*bnp1) > 4) ){
+            while(n<360 && !((m=anp1*anp1+bnp1*bnp1) > 4) ){
 
                 an = anp1;
                 bn = bnp1;
@@ -233,25 +152,23 @@ function render(){
             //et donc 'c' est en dehors de l'ensemble de Mandelbrot.
             // M varie de 4 a 36 sur la premiere vue
             // M varie de 4 a 20 sur zoom * 4
-            if(n<1580){ 
+            if(n<360){ 
                 //ctx.fillStyle = 'rgb('+m*64+','+m*32+','+m*16+')';
 
                 //ctx.fillStyle = 'hsl('+ 360*(m-m_min)/(m_max - m_min) +','+ 100 +'%,50%)';
-               /*if(n<360){
+               /* if(n<360){
                     satur= 50;
                 }
                 else{
                     satur = 100;
-                }*/
-                satur = 1;
+                }  */ 
+
                 //satur= (n/360)*100;
                 //satur = 100-((n/360)*50);
-                //satur = 100;
-                //light= 20+(n/360)*80;
+                satur = 100;
+                light= 20+(n/360)*80;
                 //light= n%100;   //>50  plus lumineux tend vers blanc
                 //light = (n+260)%100;
-                light = n / 1580;
-                //satur = (n / 360)*100;
                 //<50 plus obscur tend vers noir
 
                 //light = 36+((n/360)*(64));//36 a 100
@@ -270,23 +187,10 @@ function render(){
 
                 //ctx.fillStyle = 'hsl('+ (n+236)%360 +',100%,50%)';
 
-                //ctx.fillStyle = 'hsl('+ n +','+satur+'%,'+light+'%)';
-                //ctx.fillRect(x_ecran, y_ecran, 1, 1);
-
-                index = y_ecran * (largeur * 4) + x_ecran * 4;
-                
-                //couleur = hslToRgb((n+256%360)/360, satur, light);
-                couleur = hslToRgb((n+1120%1580)/1580, satur, light);
-
-                imageData.data[index] = couleur[0];
-                imageData.data[index+1] = couleur[1];
-                imageData.data[index+2] = couleur[2];
-                imageData.data[index+3] = 255;
+                ctx.fillStyle = 'hsl('+ n +','+satur+'%,'+light+'%)';
+                ctx.fillRect(x_ecran, y_ecran, 1, 1);
 
                 //2912 => 1884 ms
-
-                //avec le buffer 1680 ms !!!
-
             }
             //CONVERGE   donc NOIRRRRR
             // M varie de 0 a 3.9581 sur la premiere vue
@@ -300,14 +204,6 @@ function render(){
                 
                 //ctx.fillStyle = 'white';
                 //ctx.fillRect(x_ecran, y_ecran, 1, 1);
-                index = y_ecran * (largeur * 4) + x_ecran * 4;
-                
-                couleur = hslToRgb(1, 1, 0);
-
-                imageData.data[index] = couleur[0];
-                imageData.data[index+1] = couleur[1];
-                imageData.data[index+2] = couleur[2];
-                imageData.data[index+3] = 255;
             }
 
 
@@ -325,12 +221,10 @@ function render(){
     ctx.stroke();
     */
 
-    ctx.putImageData(imageData, 0, 0);
-
     const end = Date.now();
     const millis = end - start;
     bite = document.querySelector('#bite');
-    bite.innerHTML = "Loading time = "+millis+" ms";
+    bite.innerHTML = "Bite en ms = "+millis;
 }
 
 
@@ -344,13 +238,9 @@ canvas.addEventListener("wheel",function(e){
 
     //Scrolling up
     if (e.deltaY < 0){
-        //canvas.classList.add('zoom');
-        //ctx.scale(2, 2);
-        //ctx.putImageData(imageData, 0, 0);
         convertCoordToInterval(x_souris,y_souris);
         zoomInterval(zoomConst);
         render();
-        //canvas.classList.remove('zoom');
     }
 
     //Scrolling down
