@@ -29,26 +29,28 @@
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
-largeur = 8000;    //3 600 000 000 000 multiplications
-hauteur = 8000;
+largeur = 100;    //3 600 000 000 000 multiplications
+hauteur = 100;
 //largeur = document.body.clientWidth; //.innerWidth;
 //hauteur = document.body.clientWidth*1/1; //.innerWidth*1/1;
 
 ctx.canvas.width = largeur;
 ctx.canvas.height = hauteur;
 
-/*
+x_min = 0.4245171450376508;
+x_max = 0.4245175026655196;
+y_min = -0.2075330085754396;
+y_max = -0.2075326509475709;/*
 x_min = -2.1;
 x_max = 0.9;
 y_min = -1.5;
-y_max = 1.5;*/
-x_min = -0.743643887037151-(0.000000000051299/2);
+y_max = 1.5;x_min = -0.743643887037151-(0.000000000051299/2);
 x_max = -0.743643887037151+(0.000000000051299/2);
 
 y_min = 0.131825904205330-(0.000000000051299/2);
-y_max = 0.131825904205330+(0.000000000051299/2);
+y_max = 0.131825904205330+(0.000000000051299/2);*/
 
-max_n_def = 1580; //1111
+max_n_def = 1111; //1111
 
 
 tabxy = [...Array(largeur)].map(item => Array(hauteur).fill(true));
@@ -180,7 +182,7 @@ function render(){
         while(x_ecran<largeur){
             
             if(tabxy[x_ecran][y_ecran]==-1){
-                ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 1)';
                 ctx.fillRect(x_ecran, y_ecran, 1, 1);
             }
             else{
@@ -193,10 +195,10 @@ function render(){
                 }
                 else{
                     
-                    colorI=Math.trunc(colorI*1999);
-                    r_color = colorsMap[colorI][0];
-                    g_color = colorsMap[colorI][1];
-                    b_color = colorsMap[colorI][2];
+                    colorI=Math.trunc(colorI*255);
+                    r_color = colorsMap[colorI][0]*255;
+                    g_color = colorsMap[colorI][1]*255;
+                    b_color = colorsMap[colorI][2]*255;
                     r_color = r_color;
                     g_color = g_color;
                     b_color = b_color;

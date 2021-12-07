@@ -1,0 +1,70 @@
+<html>
+<head>
+    <title>Mandel</title>
+    <style>
+        body{
+            background-color:black;
+            text-align:center;
+            color:white;
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas>
+        Désolé, votre navigateur ne prend pas en charge &lt;canvas&gt;.
+    </canvas>
+
+    <p></p>
+
+</body>
+
+<script>
+
+var canvas = document.querySelector('canvas');
+var ctx = canvas.getContext('2d');
+
+largeur = 2000;    
+hauteur = 100;
+
+ctx.canvas.width = largeur;
+ctx.canvas.height = hauteur;
+
+var gradient = ctx.createLinearGradient(0, 0, largeur, 0);
+gradient.addColorStop(0, 'rgb(  0,   7, 100)');
+gradient.addColorStop(0.16, 'rgb( 32, 107, 203)');
+gradient.addColorStop(0.42, 'rgb(237, 255, 255)');
+gradient.addColorStop(0.6425, 'rgb(255, 170,   0)');
+gradient.addColorStop(0.8575, 'rgb(  0,   2,   0)');
+gradient.addColorStop(1, 'rgb(  0,   7, 100)');
+
+/*
+Position = 0.0     Color = (  0,   7, 100)
+Position = 0.16    Color = ( 32, 107, 203)
+Position = 0.42    Color = (237, 255, 255)
+Position = 0.6425  Color = (255, 170,   0)
+Position = 0.8575  Color = (  0,   2,   0)
+*/
+
+ctx.fillStyle = gradient;
+ctx.fillRect(0, 0, largeur, 100);
+
+map = "var colorsMap = [</br>";
+
+for(i=0;i<largeur;i++){
+    var px = ctx.getImageData(i, 0, 1, 1).data;
+    map += " ["+px[0]+", "+px[1]+", "+px[2]+"]";
+    if(i!=largeur-1){map += ",";}
+    map += "</br>";
+}
+
+map += "];";
+
+var p = document.querySelector('p');
+p.innerHTML = map;
+
+</script>
+
+</html>

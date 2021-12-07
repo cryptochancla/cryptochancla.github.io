@@ -29,27 +29,23 @@
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
-largeur = 8000;    //3 600 000 000 000 multiplications
-hauteur = 8000;
+largeur = 500;    //3 600 000 000 000 multiplications
+hauteur = 500;
 //largeur = document.body.clientWidth; //.innerWidth;
 //hauteur = document.body.clientWidth*1/1; //.innerWidth*1/1;
+
+const imageData = ctx.createImageData(largeur, hauteur);
 
 ctx.canvas.width = largeur;
 ctx.canvas.height = hauteur;
 
-/*
-x_min = -2.1;
-x_max = 0.9;
-y_min = -1.5;
-y_max = 1.5;*/
 x_min = -0.743643887037151-(0.000000000051299/2);
 x_max = -0.743643887037151+(0.000000000051299/2);
 
 y_min = 0.131825904205330-(0.000000000051299/2);
 y_max = 0.131825904205330+(0.000000000051299/2);
 
-max_n_def = 1580; //1111
-
+max_n_def = 500;
 
 tabxy = [...Array(largeur)].map(item => Array(hauteur).fill(true));
 
@@ -106,7 +102,7 @@ function render(){
     ctx.clearRect(0, 0, largeur, hauteur);
 
     //on fait varier la precision visuelle (donc nombre diterations max) en fonction du zoom (donc etendue intervalle)
-    ratio = 100;
+    ratio = 10;
     max_n = max_n_def+Math.log(1/(x_max-x_min))*ratio;
 
     vitesse_divergence_smoothed_min = 999999;
@@ -144,7 +140,6 @@ function render(){
                 bnp1 = 2*an*bn + y;
 
                 n ++; 
-
             }
 
             //DIVERGE
@@ -152,7 +147,7 @@ function render(){
             //donc coord en dehors de l'ensemble de Mandelbrot (COLORED)
             if(n<max_n){ //du coup m > 4 
                 smoothed = Math.log2(Math.log2(m) / 2);
-                vitesse_divergence_smoothed = (Math.sqrt(n + 10 - smoothed));
+                vitesse_divergence_smoothed = Math.sqrt(n + 10 - smoothed);
                 
                 tabxy[x_ecran][y_ecran]=vitesse_divergence_smoothed;
 
@@ -166,50 +161,40 @@ function render(){
 
             x+=x_incr_z;
             x_ecran++;
-
         }
 
         y += y_incr_z;
         y_ecran ++;
-
     }
 
+    index = 0;
     y_ecran = 0;
     while(y_ecran<hauteur){
         x_ecran = 0;
         while(x_ecran<largeur){
-            
-            if(tabxy[x_ecran][y_ecran]==-1){
-                ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-                ctx.fillRect(x_ecran, y_ecran, 1, 1);
+            if(tabxy[x_ecran][y_ecran]==-1){ 
+                imageData.data[index] = 0;
+                imageData.data[index+1] = 0;
+                imageData.data[index+2] = 0;
+                imageData.data[index+3] = 255;
             }
             else{
+                //a la fin de lintervale couleur (0->1)  n vers n max, apres nmax ca converge en noir mandelbrot
+                vitesse_divergence_smoothed=tabxy[x_ecran][y_ecran];
+                colorI = (tabxy[x_ecran][y_ecran]-vitesse_divergence_smoothed_min)/(vitesse_divergence_smoothed_max-vitesse_divergence_smoothed_min)*255;
+                colorI = Math.round(colorI);
 
-                colorI=(tabxy[x_ecran][y_ecran]-vitesse_divergence_smoothed_min)/(vitesse_divergence_smoothed_max-vitesse_divergence_smoothed_min);
-
-                if(colorI>10.5){
-                    ctx.fillStyle = 'rgba(111, 25, 110, 1)';
-                    ctx.fillRect(x_ecran, y_ecran, 1, 1);
-                }
-                else{
-                    
-                    colorI=Math.trunc(colorI*1999);
-                    r_color = colorsMap[colorI][0];
-                    g_color = colorsMap[colorI][1];
-                    b_color = colorsMap[colorI][2];
-                    r_color = r_color;
-                    g_color = g_color;
-                    b_color = b_color;
-                    ctx.fillStyle = 'rgba('+r_color+', '+g_color+', '+b_color+', 1)';
-                    ctx.fillRect(x_ecran, y_ecran, 1, 1);
-                }
-
+                imageData.data[index] = 255;
+                imageData.data[index+1] = 255;
+                imageData.data[index+2] = 255;
+                imageData.data[index+3] = 255;
             }
-
+            index+=4; 
             x_ecran++;
         }
         y_ecran++;
     }
+    ctx.putImageData(imageData, 0, 0);
 
     console.log("Nb iterations : "+max_n);
     console.timeEnd('js render');

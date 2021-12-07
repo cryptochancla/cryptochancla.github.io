@@ -22,34 +22,53 @@
 
 </body>
 
-<script type="text/javascript" src="inferno_colors_map.js"></script>
-
 <script>
+
+ function hslToRgb(h, s, l){
+    var r, g, b;
+
+    if(s == 0){
+        r = g = b = l; // achromatic
+    }else{
+        var hue2rgb = function hue2rgb(p, q, t){
+            if(t < 0) t += 1;
+            if(t > 1) t -= 1;
+            if(t < 1/6) return p + (q - p) * 6 * t;
+            if(t < 1/2) return q;
+            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
-largeur = 8000;    //3 600 000 000 000 multiplications
-hauteur = 8000;
-//largeur = document.body.clientWidth; //.innerWidth;
-//hauteur = document.body.clientWidth*1/1; //.innerWidth*1/1;
+//largeur = 500;
+//hauteur = 500;
+largeur = document.body.clientWidth; //.innerWidth;
+hauteur = document.body.clientWidth*1/1; //.innerWidth*1/1;
+
+const imageData = ctx.createImageData(largeur, hauteur);
 
 ctx.canvas.width = largeur;
 ctx.canvas.height = hauteur;
 
-/*
-x_min = -2.1;
-x_max = 0.9;
-y_min = -1.5;
-y_max = 1.5;*/
-x_min = -0.743643887037151-(0.000000000051299/2);
-x_max = -0.743643887037151+(0.000000000051299/2);
+x_min = -0.515746631736527;
+x_max = -0.4688716317365269;
 
-y_min = 0.131825904205330-(0.000000000051299/2);
-y_max = 0.131825904205330+(0.000000000051299/2);
+y_min = -0.6279472305389219;
+y_max = -0.581072230538922;
 
-max_n_def = 1580; //1111
-
+max_n = 300;
 
 tabxy = [...Array(largeur)].map(item => Array(hauteur).fill(true));
 
@@ -106,8 +125,8 @@ function render(){
     ctx.clearRect(0, 0, largeur, hauteur);
 
     //on fait varier la precision visuelle (donc nombre diterations max) en fonction du zoom (donc etendue intervalle)
-    ratio = 100;
-    max_n = max_n_def+Math.log(1/(x_max-x_min))*ratio;
+    ratio = 1;
+    max_n = max_n+Math.log(1/(x_max-x_min))*ratio;
 
     vitesse_divergence_smoothed_min = 999999;
     vitesse_divergence_smoothed_max = -999999;
@@ -174,42 +193,58 @@ function render(){
 
     }
 
+    index = 0;
     y_ecran = 0;
     while(y_ecran<hauteur){
         x_ecran = 0;
         while(x_ecran<largeur){
-            
-            if(tabxy[x_ecran][y_ecran]==-1){
-                ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-                ctx.fillRect(x_ecran, y_ecran, 1, 1);
+            if(tabxy[x_ecran][y_ecran]==-1){ 
+                imageData.data[index] = 0;
+                imageData.data[index+1] = 0;
+                imageData.data[index+2] = 0;
+                imageData.data[index+3] = 255;
             }
             else{
-
-                colorI=(tabxy[x_ecran][y_ecran]-vitesse_divergence_smoothed_min)/(vitesse_divergence_smoothed_max-vitesse_divergence_smoothed_min);
-
-                if(colorI>10.5){
-                    ctx.fillStyle = 'rgba(111, 25, 110, 1)';
-                    ctx.fillRect(x_ecran, y_ecran, 1, 1);
+                satur = 1;
+                light = 0.5;
+                color=(tabxy[x_ecran][y_ecran]-vitesse_divergence_smoothed_min)/(vitesse_divergence_smoothed_max-vitesse_divergence_smoothed_min);
+                
+                //a la fin de lintervale couleur (0->1)  n vers n max, apres nmax ca converge en noir mandelbrot
+                if(color>10.75){
+                    couleur = hslToRgb(0.75-(color-0.75), satur, light);
+                    imageData.data[index] = couleur[0];
+                    imageData.data[index+1] = couleur[1];
+                    imageData.data[index+2] = couleur[2];
+                    imageData.data[index+3] = 255;//rgb 1580 couleurs sans light/sature
                 }
                 else{
-                    
-                    colorI=Math.trunc(colorI*1999);
-                    r_color = colorsMap[colorI][0];
-                    g_color = colorsMap[colorI][1];
-                    b_color = colorsMap[colorI][2];
-                    r_color = r_color;
-                    g_color = g_color;
-                    b_color = b_color;
-                    ctx.fillStyle = 'rgba('+r_color+', '+g_color+', '+b_color+', 1)';
-                    ctx.fillRect(x_ecran, y_ecran, 1, 1);
+                    if(color>0.5){
+                        couleur = hslToRgb(0.5-(color-0.5), satur, light);
+                        imageData.data[index] = couleur[0];
+                        imageData.data[index+1] = 255-couleur[1];
+                        imageData.data[index+2] = couleur[2];
+                        imageData.data[index+3] = 255;//rgb 1580 couleurs sans light/sature
+                    }
+                    else{
+                        couleur = hslToRgb(color, satur, light);
+                        imageData.data[index] = couleur[0];
+                        imageData.data[index+1] = 255-couleur[1];
+                        imageData.data[index+2] = couleur[2];
+                        imageData.data[index+3] = 255;//rgb 1580 couleurs sans light/sature
+                    }
                 }
+                //couleur = hslToRgb(y_ecran/hauteur, satur, 0.5);
 
             }
 
+
+
+            index+=4; 
             x_ecran++;
         }
         y_ecran++;
     }
+    ctx.putImageData(imageData, 0, 0);
 
     console.log("Nb iterations : "+max_n);
     console.timeEnd('js render');
@@ -217,8 +252,6 @@ function render(){
     console.log("x_max : "+x_max);
     console.log("y_min : "+y_min);
     console.log("y_max : "+y_max);
-    console.log("vitesse_divergence_smoothed_min : "+vitesse_divergence_smoothed_min);
-    console.log("vitesse_divergence_smoothed_max : "+vitesse_divergence_smoothed_max);
 }
 
 zoomConst=2;
