@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Fractal Test</title>        
+        <style>
+            body {
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="plot" width="1250" height="800"></canvas>
+        <!-- 
+            Parameters
+            If you change width or height, you'll need to update some of the C/C++ sources too, 
+            since some of the the memory allocation code is hardcoded at the moment. 
+        -->
+        <script>
+            const WIDTH = 1250,
+                  HEIGHT = 800,
+                  ITERATIONS = 1580,
+                  LIMIT = 10,                   
+                  ZOOM = 6000.0,
+                  PAN_X = (-0.6320312499999996+0.6945312499999998)/2,
+                  PAN_Y = (-0.35000000000000003+0.38125000000000003)/2;       
+        </script>
+                
+        <!-- Javascript version -->
+        <script>
+            const ctx = document.getElementById('plot').getContext('2d'),
+                  imgdata = ctx.getImageData(0,0, WIDTH, HEIGHT);
+            
+            function point(x, y) {
+                let real = x,
+                    imaginary = y;
+                for(let i = 0; i < ITERATIONS; i++) {
+                     const nextReal = real*real - imaginary*imaginary + x;
+                     const nextImaginary = 2 * real * imaginary + y;
+                     real = nextReal;
+                     imaginary = nextImaginary;
+                    if (real * imaginary > LIMIT) {
+                        return i/ITERATIONS;                        
+                    }
+                }
+                return 0;
+            }            
+                    
+            function render() {
+                const data = imgdata.data;
+                console.time('js render');
+                let offset = 0;
+                for(let y = 0; y < HEIGHT; y++) {
+                    const my = y / ZOOM - PAN_Y;
+                    for(let x = 0; x < WIDTH; x++) {
+                        const mx = x / ZOOM - PAN_X,
+                              intensity = point(mx, my);                        
+                        data[offset++] = 0;
+                        data[offset++] = Math.max(0, intensity - 0.5) * 2 * 255;
+                        data[offset++] = Math.min(1, intensity * 2) * 255;
+                        data[offset++] = 255;
+                   } 
+                }    
+                console.timeEnd('js render');                                        
+                ctx.putImageData(imgdata, 0, 0);
+            }                        
+            render();
+        </script>
+    </body>
+</html>
